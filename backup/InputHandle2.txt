@@ -1,0 +1,228 @@
+/* Input Handling */
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Thank you for participating!</title>
+<script src="livevalidation_standalone.js"></script>       
+
+
+<style type="text/css">
+body {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    font-size:16px;    
+    font-family: Arial, Helvetica, sans-serif;
+}    
+
+p {
+    margin:0px 0px 13px;
+}
+
+.main {
+    width:750px;
+    margin:auto;
+}
+
+.survey-container {
+    text-align:center;
+    overflow:hidden;
+}
+
+fieldset {
+    padding:5px 0px;
+    margin:5px 0px;
+    border:0px;                        
+}
+
+ fieldset legend {
+    background-color:#E6E6E6;
+    padding:1px 2px;
+    font-weight:bold;
+}
+
+
+.survey-right{
+    float:right;        
+    width:360px;
+	padding-left:20px;
+    text-align:left;
+}
+
+#signup_form label {
+    float:left;
+    width:100px;
+}
+
+#signup_form input[type=text]:focus {
+    border-color:#0000b3!important;
+}
+
+.LV_valid {
+    padding-left: 18px;
+    color:#00CC00;
+    font-size: 12px;
+}
+    
+.LV_invalid {
+    padding-left: 18px;
+    color:#CC0000;
+    font-size: 12px;
+}
+
+.mobile-container {
+    padding-bottom:15px;
+}
+
+.mobile-container .LV_valid {
+    padding-left: 5px;
+    color:#00CC00;
+    font-size: 12px;
+    position:absolute;
+    margin-left:-60px;
+    margin-top:25px;
+}
+
+.mobile-container .LV_invalid {
+    padding-left: 5px;
+    color:#CC0000;
+    font-size: 12px;
+    position:absolute;
+    margin-left:-60px;
+    margin-top:25px;
+    
+}
+
+.style1 {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+    .header{    
+        border-bottom-color:#949494;  
+        background-color:#CC0000;
+    }
+    .congratsmessage {
+        border-bottom-color:#949494;
+    }
+.style2 {
+	font-size: 18px;
+	font-weight: bold;
+}
+.mobile-container .LV_valid {
+    padding-left: 5px;
+    color:#00CC00;
+    font-size: 12px;
+    position:absolute;
+    margin-left:-60px;
+    margin-top:37px;
+}
+
+.mobile-container .LV_invalid {
+    padding-left: 5px;
+    color:#CC0000;
+    font-size: 12px;
+    position:absolute;
+    margin-left:-60px;
+    margin-top:37px;
+    
+}
+</style>
+
+
+</head>
+<body>
+
+<div class="main" style="padding-top:10px;">
+        <form id="signup_form" action="winner2.php?t202kw=&amp;subid2=&amp;c1=" method="post" onsubmit="return onsubmitForm(this)">                         
+                                              
+            <input name="dest_url" id="dest_url" value="winner2.php?t202kw=&amp;subid2=&amp;c1=" type="hidden">                                               
+            <input name="url" id="url" value="dailytipsnow.com" type="hidden">
+          
+      
+               <center> <div id="form" style="width:400px; text-align:left;">
+                <fieldset>
+                    <label for="my_testing"> My Testing*:</label>
+                     <input class="mreq" id="my_testing" name="my_testing" size="18" maxlength="30" msg=" " style="border: 1px solid rgb(130, 130, 130); padding: 4px; font-size: 20px;" type="text">  
+                <script type="text/javascript"> 
+                      var my_testing = new LiveValidation('my_testing', { validMessage: "OK", wait: 1100 });
+                      my_testing.add(Validate.Presence, {failureMessage: "Required"});
+                    </script> 
+                </fieldset> 
+                <fieldset>
+                    <label for="email"> Email*:</label>
+                  
+                      <input class="mreq" id="email" name="email" size="18" maxlength="40" msg=" " style="border: 1px solid rgb(130, 130, 130); padding: 4px; font-size: 20px;" type="text">
+                      
+                <script type="text/javascript"> 
+                      var email = new LiveValidation('email', { validMessage: "OK", wait: 1100 });
+                      email.add(Validate.Email, {failureMessage: "Invalid"});
+                      email.add(Validate.Presence, {failureMessage: "Required"});
+                    </script>
+                </fieldset>                             
+                <fieldset class="mobile-container">
+
+                    <label for="mobile_number1">Cell Phone*:</label>
+                      <input class="mreq" id="mobile_number1" name="mobile_number1" maxlength="3" size="1" msg=" " style="border: 1px solid rgb(130, 130, 130); padding: 4px; font-size: 20px;" onkeyup="nextfield(this)" type="text">
+                      <input class="mreq" id="mobile_number2" name="mobile_number2" maxlength="3" size="1" msg=" " style="border: 1px solid rgb(130, 130, 130); padding: 4px; font-size: 20px;" onkeyup="nextfield(this)" type="text">
+                      <input class="mreq" id="mobile_number3" name="mobile_number3" maxlength="4" size="2" msg=" " style="border: 1px solid rgb(130, 130, 130); padding: 4px; font-size: 20px;" type="text">
+                  
+                <script type="text/javascript"> 
+                      var mobile_number1 = new LiveValidation('mobile_number1', { validMessage: "OK", wait: 1100 });
+                      mobile_number1.add(Validate.Numericality , {notANumberMessage: "Not Numeric"});
+                      mobile_number1.add(Validate.Presence, {failureMessage: "Required"});
+                      mobile_number1.add( Validate.Length, { is: 3, wrongLengthMessage: "Not 3-digits"} );
+                      var mobile_number2 = new LiveValidation('mobile_number2', { validMessage: "OK", wait: 1100 });
+                      mobile_number2.add(Validate.Numericality , {notANumberMessage: "Not Numeric"});
+                      mobile_number2.add(Validate.Presence, {failureMessage: "Required"});
+                      mobile_number2.add( Validate.Length, { is: 3, wrongLengthMessage: "Not 3-digits"} );
+                      var mobile_number3 = new LiveValidation('mobile_number3', { validMessage: "OK", wait: 1100 });
+                      mobile_number3.add(Validate.Numericality , {notANumberMessage: "Not Numeric"});
+                      mobile_number3.add(Validate.Presence, {failureMessage: "Required"});
+                      mobile_number3.add( Validate.Length, { is: 4, wrongLengthMessage: "Not 4-digits"} );
+                    </script>
+                </fieldset>
+			
+                <fieldset style="width:430px;text-align:center;"> 
+                        <input name="submit" src="next_green.jpg" type="image">
+ &nbsp;  &nbsp; &nbsp;
+                </fieldset>  
+  
+
+
+                                        
+<!-- End Content -->         
+
+</div>      
+
+
+<div id="bottom">
+  <span style="color: rgb(66, 66, 66);">
+    
+    
+  </span>
+
+  <center>
+  </center> 
+</div>
+
+ 
+
+<!--- Footer Begin ----->
+
+
+
+<!--- Footer End ----->
+
+
+
+</center>
+</form>
+</div>
+</body>
+</html>

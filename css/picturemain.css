@@ -1,0 +1,36 @@
+.pointer { cursor: pointer }
+#pictures{
+vertical-align:top;
+}
+.slideshow { 
+	height: 420px; 
+	width: 610px; 
+	margin: auto;
+	position: relative;
+	display:inline-block; 
+}
+.slideshow img { 
+	padding: 15px; 
+	border: 1px solid #ccc; 
+	background-color: #eee; 
+}
+#show{height:420px;}
+.markup{cursor: pointer; position: absolute; top: 0px; left: 0px; display: block; z-index: 6; opacity: 1;  height: 420px;}
+#backward,#play,#forward,.nodisp{display:none;}
+#PicNav,.PicNav{width:17px;display:inline-block;height:78px;}
+.PicNavbg{background-color:#E6FFE6;display:inline-block;vertical-align:top;}
+.Comment{background-color:#E6FFE6;height:78px;display:inline-block;vertical-align:top;}
+#CurrComment{width:570px;display:inline-block;vertical-align:top;font-size:13px}
+#profile{display:inline-block;height:}
+#comment2{display:inline-block;vertical-align:top;}
+#comments{width:460px;display:inline-block;vertical-align:top;font-size:13px}
+.combg{background-color:#E9FFFF;height:78px;}
+.block,#videomain{display:inline-block;vertical-align:top;}
+#OwnerComNav{width:17px;display:inline-block;vertical-align:top;}
+#CurrVideoComment{width:570px;display:inline-block;vertical-align:top;font-size:13px;}
+.info{background-color:#E9FFFF;text-align:left;font-size:12px;}
+.whitefont{color:white;font-weight:bold;}
+.redfont{color:red;font-weight:bold;}
+.greenfont{color:#6BB130;font-weight:bold;}
+#NextVideos{width:350px;display:inline-block;}
+#VideoNav{display:inline-block;width:220px;}

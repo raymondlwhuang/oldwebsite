@@ -1,0 +1,7 @@
+<object type="application/x-shockwave-flash" data="<?= FRONTEND_PATH ?>/player_mp3_maxi.swf" width="73" height="76">
+    <param name="movie" value="<?= FRONTEND_PATH ?>/player_mp3_maxi.swf" />
+    <param name="bgcolor" value="#000000" />
+    <param name="FlashVars" value="mp3=http%3A//www.todaysluckywinner.com/frontend/content_ringtones/<?= $i ?>.mp3&amp;width=73&amp;height=76&amp;showslider=0&amp;sliderwidth=0&amp;sliderheight=0&amp;volumewidth=0&amp;volumeheight=0" />
+</object>
+
+http://jquery.malsup.com/cycle/

@@ -1,0 +1,30 @@
+<html>
+
+<head>
+
+<title>Input handling</title>
+<script type="text/javascript">
+function setnametorun() {
+	var select_list_field = document.getElementById('country');
+	var select_list_selected_index = select_list_field.selectedIndex;
+
+	var text = select_list_field.options[select_list_selected_index].text;
+	alert(text);
+	var value = select_list_field.value;
+	alert(value);
+}
+</script>
+</head>
+
+<body>
+<form>
+<select name="country" class="formfielddropdown" id="country" onchange="document.getElementById('CountryName').value = this.options[selectedIndex].text" style="width: 200px;">
+<option value="A option">Asia/Pacific Region</option>
+<option value="B option">Andorra</option>
+</select>
+<input type="text" name="CountryName" id='CountryName'>
+<input type="button" name="Example" value="Click here"  onClick="setnametorun();return false;">
+</form>
+</body>
+
+</html>

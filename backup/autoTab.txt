@@ -1,0 +1,19 @@
+/* Automatic tab to other input field */
+<html>
+ <head>
+ <script type="text/javascript">
+ function autoTab(a,b)
+ {
+	if(a.value.length == a.maxLength){
+		document.getElementById(b).focus();
+	}
+ }
+ </script>
+ </head>
+ <body>
+ 
+Enter your name: <input type="text" id="fname" maxlength = 10 onkeyup="autoTab(this,'tohere');">
+<input type="text" id="tohere" onkeyup="autoTab(this.id)">
+ 
+</body> 
+</html>

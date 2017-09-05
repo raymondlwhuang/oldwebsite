@@ -1,0 +1,39 @@
+<html>
+
+<head>
+
+<title>Input handling</title>
+<script type="text/javascript">
+	function validWebsite(website) {
+		var re = /^(http:\/\/([\-\w]+\.)+\w{2,3}(\/[%\-\w]+(\.\w{2,})?)*(([\w\-\.\?\\/+@&#;`~=%!]*)(\.\w{2,})?)*\/?)/i;
+
+		if (!re.test(website)){
+			alert("Invalid website");
+		}
+		else
+		alert("website is valid!");
+		return re.test(website);			
+	}
+	function validEMail(email) {
+		var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+		if (!re.test(email)){
+			alert("Invalid e-mail address!");
+		}
+		else
+		alert("e-mail address is valid!");
+		return re.test(email);			
+	}	
+</script>
+</head>
+
+<body>
+<form>
+Website:<input type="text" name="website" id='website'>
+<input type="submit" name="Verify" value="Verify"  onClick="validWebsite(document.getElementById('website').value);return false;">
+e-mail <input type="text" name="email" id='email'>
+<input type="submit" name="Verify" value="Verify"  onClick="validEMail(document.getElementById('email').value);return false;">
+</form>
+</body>
+
+</html>

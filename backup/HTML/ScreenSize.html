@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Detecting user's screen size</title>
+<body>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+  <tr>
+<td id="leftcolumn" valign="top">
+
+    <table border="0">
+      <tbody><tr>
+        <td><form method="POST" name="t">
+          <table border="1" cellpadding="5">
+            <tbody><tr>
+              <td valign="top" width="150" bgcolor="#D8EA99"><strong>width:</strong></td>
+              <td><input value="1680" size="20" name="t1" type="text"></td>
+            </tr>
+            <tr>
+              <td valign="top" width="150" bgcolor="#D8EA99"><strong>height:</strong></td>
+              <td><input value="1050" size="20" name="t2" type="text"></td>
+            </tr>
+            <tr>
+              <td valign="top" width="150" bgcolor="#D8EA99"><strong>availWidth</strong></td>
+              <td><input value="1680" size="20" name="t5" type="text"></td>
+            </tr>
+            <tr>
+              <td valign="top" width="150" bgcolor="#D8EA99"><strong>availHeight</strong></td>
+              <td><input value="1010" size="20" name="t6" type="text"></td>
+            </tr>
+            <tr>
+              <td valign="top" width="150" bgcolor="#D8EA99"><strong>colorDepth:</strong></td>
+              <td><input value="24" size="20" name="t3" type="text"></td>
+            </tr>
+            <tr>
+              <td valign="top" width="150" bgcolor="#D8EA99"><strong>pixelDepth: </strong></td>
+              <td><input value="24" size="20" name="t4" type="text"></td>
+            </tr>
+          </tbody></table>
+        </form>
+        </td>
+      </tr>
+    </tbody></table>
+    <p align="left"><!--webbot bot="HTMLMarkup" startspan --><script>
+<!--
+function show(){
+if (!document.all&&!document.layers&&!document.getElementById)
+return
+document.t.t1.value=screen.width
+document.t.t2.value=screen.height
+document.t.t3.value=screen.colorDepth
+document.t.t4.value=screen.pixelDepth
+document.t.t5.value=screen.availWidth
+document.t.t6.value=screen.availHeight
+}
+show()
+//-->
+</script><!--webbot bot="HTMLMarkup"
+    endspan i-checksum="64960" --></p>
+</td>
+  </tr>
+</tbody></table>
+
+		

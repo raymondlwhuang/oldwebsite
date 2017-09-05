@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>My Helping Site</title>
+	<link type="text/css" rel="stylesheet" href="../css/test.css">
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Original:  Nannette Thacker -->
+<!-- http://www.shiningstar.net -->
+<!-- Begin
+function checkNumeric(objName,minval, maxval,comma,period,hyphen)
+{
+	var numberfield = objName;
+	if (chkNumeric(objName,minval,maxval,comma,period,hyphen) == false)
+	{
+		numberfield.select();
+		numberfield.focus();
+		objName.value = objName.value.substr(0,objName.value.length-1);
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+function chkNumeric(objName,minval,maxval,comma,period,hyphen)
+{
+// only allow 0-9 be entered, plus any values passed
+// (can be in any order, and don't have to be comma, period, or hyphen)
+// if all numbers allow commas, periods, hyphens or whatever,
+// just hard code it here and take out the passed parameters
+var checkOK = "0123456789" + comma + period + hyphen;
+var checkStr = objName;
+var allValid = true;
+var decPoints = 0;
+var periodcount = 0;
+var allNum = "";
+if(checkStr.value.charAt(0) == hyphen) k=1; else k = 0;
+for (i = k;  i < checkStr.value.length;  i++)
+{
+ch = checkStr.value.charAt(i);
+if(ch == period) periodcount = periodcount + 1;
+if (periodcount > 1) {
+allValid = false;
+break;
+}
+
+for (j = k;  j < checkOK.length;  j++)
+if (ch == checkOK.charAt(j))
+break;
+if (j == checkOK.length)
+{
+allValid = false;
+break;
+}
+if (ch != ",")
+allNum += ch;
+}
+if (!allValid)
+{	
+alertsay = "Please enter only these values \""
+alertsay = alertsay + checkOK + "\" in the \"" + checkStr.name + "\" field."
+//alert(alertsay);
+return (false);
+}
+
+// set the minimum and maximum
+var chkVal = allNum;
+var prsVal = parseInt(allNum);
+if (chkVal != "" && !(prsVal >= minval && prsVal <= maxval))
+{
+alertsay = "Please enter a value greater than or "
+alertsay = alertsay + "equal to \"" + minval + "\" and less than or "
+alertsay = alertsay + "equal to \"" + maxval + "\" in the \"" + checkStr.name + "\" field."
+//alert(alertsay);
+return (false);
+}
+}
+//  End -->
+</script>
+</head>
+<body>
+<form method="POST" id=myform name=myform
+action="/articles/articles/javascript/checkNumeric.asp?ID=<%=siteID%>">
+Allow Comma, Period, Negative
+<input type=text onkeyup="checkNumeric(this,-5000,5000,'','.','-');" name='allowcomma' size=10 maxlength=10><br>
+No Comma, Period, Negative
+<input type=text onkeyup="checkNumeric(this,5,60,'','','');"
+	name='nocomma' size=10 maxlength=10><br>
+<input type="Submit" name="Save" value="Save">
+</form>
+</body></html>

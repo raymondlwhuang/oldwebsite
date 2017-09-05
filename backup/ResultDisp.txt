@@ -1,0 +1,187 @@
+<?php
+include("config.php");
+if(isset($_COOKIE['searchID2']) or isset($_REQUEST['searchID2']))
+{
+	if(isset($_COOKIE['searchID2'])) {$searchID2=(int)$_COOKIE['searchID2'];}
+	ELSEIF(isset($_REQUEST['searchID2'])){$searchID2=(int)$_REQUEST['searchID2'];}
+	$GetDisplay = "SELECT *	FROM main WHERE id = $searchID2 ORDER BY id LIMIT 1";
+	include("RecordSet.php");
+	setcookie("searchID2","",time() + 3600);
+ }
+ELSEIF(isset($_POST['searchID']))
+{
+	$searchID2 = (int)$_POST['searchID'];
+	$GetDisplay = "SELECT * FROM main WHERE id = $searchID2 ORDER BY id  LIMIT 1";
+	include("RecordSet.php");
+}
+if(isset($_POST['Delete']))
+{	
+	$searchID3 =  (int)$_POST['searchID'];
+	mysql_query("DELETE FROM main WHERE id = $searchID3");
+	$GetDisplay = "SELECT * FROM main where id < $searchID3 ORDER BY id DESC LIMIT 1";
+	include("RecordSet.php");
+}
+ELSEIF(isset($_POST['Previous']))
+{
+	$searchID3 =  (int)$_POST['searchID'];	
+	$GetDisplay = "SELECT * FROM main WHERE id < $searchID3 ORDER BY id DESC LIMIT 1";
+	$result = mysql_query($GetDisplay);
+	if (mysql_num_rows($result) == 0){
+		$GetDisplay = "SELECT * FROM main WHERE id = $searchID3";	
+	}
+	include("RecordSet.php");
+}
+ELSEIF(isset($_POST['Next']))
+{
+	$searchID3 =  (int)$_POST['searchID'];
+	$GetDisplay = "SELECT * FROM main WHERE id > $searchID3 ORDER BY id LIMIT 1";
+	$result = mysql_query($GetDisplay);
+	if (mysql_num_rows($result) == 0){
+		$GetDisplay = "SELECT * FROM main WHERE id = $searchID3";
+	}					
+	include("RecordSet.php");
+}
+ELSEIF(isset($_POST['First']))
+{
+	$GetDisplay = "SELECT * FROM main ORDER BY id ASC LIMIT 1";
+	include("RecordSet.php");
+}
+ELSEIF(isset($_POST['Last']))
+{
+	$GetDisplay = "SELECT * FROM main ORDER BY id DESC LIMIT 1";
+	include("RecordSet.php");
+} 
+ELSEIF(isset($_POST['Save']))
+{
+	$searchID3 =  (int)mysql_real_escape_string($_POST['searchID']);
+	$ShortDesc = mysql_real_escape_string($_POST['ShortDesc']);
+	$Source =  mysql_real_escape_string($_POST['Source']);
+	$Name =  mysql_real_escape_string($_POST['Name']);
+	$Ext =  mysql_real_escape_string($_POST['Ext']);
+	mysql_query("UPDATE main SET ShortDesc='$ShortDesc', Source='$Source', 	Name='$Name', Ext='$Ext' WHERE id = $searchID3");
+	$GetDisplay = "SELECT * FROM main	where id = $searchID3 ORDER BY id LIMIT 1";
+	include("RecordSet.php");	
+
+}
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<script type="text/javascript">
+function setnametorun() {
+	var select_list_field = document.getElementById('Ext');
+	var select_list_selected_index = select_list_field.selectedIndex;
+
+	var text = select_list_field.options[select_list_selected_index].text;
+	if(text == "php") var value = "PHP/"+document.getElementById("Name").value+'.'+select_list_field.value;
+	else var value = "HTML/"+document.getElementById("Name").value+'.'+select_list_field.value;
+	if(text == "php" || text == "html" || text == "pdf") window.open(value);
+	else if(text == "link") window.open(document.getElementById("Source").innerHTML);
+	else alert('Example Only Available for php or html files!');
+}
+</script>
+<link type="text/css" rel="stylesheet" href="css/MyResource.css" />
+<script type="text/javascript" src="scripts/autoComplete.js"></script>
+
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+<title>Result Display</title>
+
+</head>
+<body>
+<form name="DescSearch" method="POST">
+<input type="hidden" name="searchID" id="searchID" />
+<div align="left">
+  <table border="0">
+    <tr>
+      <td><p>Short Description:</p></td>
+      <td><input type="text"  id="searchField" autocomplete="off" name="ShortDesc" size="100"  maxlength="100" id="ShortDesc" onkeydown="document.getElementById('loader').style.display = 'block';" onkeyup="document.getElementById('loader').style.display = 'none';"/></td>
+      <td><img id="loader" src="images/loader.gif" style="vertical-align: middle; display: none" />
+	  <input type="hidden" name="Submit" id="searchDone" value="Search" style="background : #AFDCEC ; width : 5em ;color:#04B404;"></td>
+    </tr>
+    <tr>
+    <td colspan="3" align="left"><div id="popups"> </div></td>
+    </tr>
+  </table>
+  </div>
+</form>
+
+<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="MyForm" enctype="application/x-www-form-urlencoded" method="post">
+<table>
+  <tr>
+	<td colspan="4"><input type="hidden" name="searchID" value="<?php if (isset($searchID)){ echo $searchID; } else ''; ?>" readonly="readonly"></td>
+  </tr>
+  <tr>
+    <td><p>Short Description:</p></td>
+    <td colspan="3"><input type="text" name="ShortDesc" size="100" maxlength="100" value="<?php if (isset($ShortDesc)){ echo htmlspecialchars($ShortDesc); } else ''; ?>"></td>
+  </tr>
+	<tr>
+    <td colspan="4">
+	<textarea rows="36" cols="200" name="Source" id="Source"><?php if (isset($Source)){ echo trim(htmlspecialchars($Source)); } else ''; ?></textarea></td>
+   </tr>
+  <tr>
+    <td align="right"><p>Name:</p></td>
+    <td width="20"><input type="text" name="Name" id="Name" size="15" maxlength="25" value="<?php if (isset($Name)){ echo htmlspecialchars($Name); } else ''; ?>"></td>
+    <td align="left" width="10"><p>Ext:</p></td>
+    <td>
+	<select name="Ext" id="Ext" class="reqd" >
+	   <option value="php" <?php if(isset($Ext) && htmlspecialchars($Ext) == "php") echo "selected"; ?>>php</option>
+	   <option value="html" <?php if(isset($Ext) && htmlspecialchars($Ext) == "html") echo "selected"; ?>>html</option>
+	   <option value="htm" <?php if(isset($Ext) && htmlspecialchars($Ext) == "htm") echo "selected"; ?>>htm</option>
+	   <option value="pdf" <?php if(isset($Ext) && htmlspecialchars($Ext) == "pdf") echo "selected"; ?>>pdf</option>
+	   <option value="js" <?php if(isset($Ext) && htmlspecialchars($Ext) == "js") echo "selected"; ?>>js</option>
+	   <option value="txt" <?php if(isset($Ext) && htmlspecialchars($Ext) == "txt") echo "selected"; ?>>txt</option>
+	   <option value="link" <?php if(isset($Ext) && htmlspecialchars($Ext) == "link") echo "selected"; ?>>link</option>
+	 </select>		
+	</td>
+  </tr>  
+</table>    
+<input type="submit" name="Save" value="Save" onclick="return confirm('Are you sure you want to save?')">
+<input type="reset" name="Cancel" value="Cancel">
+<input type="submit" name="Delete" value="Delete" onclick="return confirm('Are you sure you want to delete?')">
+<input type="submit" name="Previous" value="Previous">
+<input type="submit" name="Next" value="Next">
+<input type="submit" name="First" value="First">
+<input type="submit" name="Last" value="Last">
+<input type="button" name="Add" value="Add"  onClick="window.open( 'AddSource.php', '_top');return false;">
+<input type="button" name="Example" value="Example"  onClick="setnametorun();return false;">
+</form>
+<?php 
+echo <<<_END
+<form method='post' enctype='multipart/form-data'>
+Select a JPG, GIF, PNG or TIF File to Upload:
+<input type='file' name='filename' size='15' />
+<input type='submit' value='Upload' /></form>
+_END;
+
+if ($_FILES)
+{
+	$name = $_FILES['filename']['name'];
+	switch($_FILES['filename']['type'])
+	{
+		case 'image/jpeg': $ext = 'jpg'; break;
+		case 'image/gif':  $ext = 'gif'; break;
+		case 'image/png':  $ext = 'png'; break;
+		case 'image/tiff': $ext = 'tif'; break;
+		case 'application/pdf': $ext = 'pdf'; break;
+		case 'application/zip': $ext = 'zip'; break;
+		default:		   $ext = '';    break;
+	}
+	if ($ext)
+	{
+		//$n = "image.$ext";
+		$n = "images/".$name;
+		move_uploaded_file($_FILES['filename']['tmp_name'], $n);
+		echo "Uploaded image '$name' as '$n':<br />";
+		echo "<img src='$n' />";
+	}
+	else echo "'$name' is not an accepted image file";
+
+}
+
+
+?>
+<iframe src="http://raymondlwhuang.host56.com/MyHelpFile.php" width="30%" height="30%" style="position : fixed ; bottom: 0em ; right: 1em ;">
+  <p>Your browser does not support iframes.</p>
+</iframe>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Image combo box/Image select option</title>
+<style type="text/css" media="screen">
+div {
+	margin-bottom: 10px;
+}
+
+ul {
+	display: none;
+	list-style-type: none;
+	margin-top: 5px;
+}
+
+ul > li > a:hover {background: #736F6E;}
+
+div > p {
+	display: block;
+	width: 130px;
+	font-size: 18px;
+	font-weight: bold;
+	background: #FFFFFF;
+	border: 2px outset;
+	margin:0
+ }
+ 
+div > p:hover  {  border: 2px inset;background: #FFFFFF; border-color: #736F6E;color:white  }
+
+</style>	
+<script type="text/javascript" >
+window.onload = initAll;
+
+function initAll() {
+	var allLinks = document.getElementsByTagName("div");
+	
+	for (var i=0; i<allLinks.length; i++) {
+		allLinks[i].onmouseover = function (){document.getElementById(this.className).style.display = "block";}
+		allLinks[i].onmouseout =  function (){document.getElementById(this.className).style.display = "none";}
+	}
+}
+
+</script>
+</head>
+<body>
+<table>
+<tbody>
+<tr>
+<td>
+	<div class="menu1">
+		<p><img src='../pictures/M1060003.jpg'  height='50px' id="picked" /><img src='../images/down_arrow.jpg'  width='40px'/></p>
+		<ul style="display: none;text-align:left" id="menu1">
+			<li><a href="" onClick="document.getElementById('picked').src = '../pictures/M1060003.jpg';return false;"><img src='../pictures/M1060003.jpg'  height='50px'/></a></li>
+			<li><a href="" onClick="document.getElementById('picked').src = '../pictures/M1060004.jpg';return false;"><img src='../pictures/M1060004.jpg'  height='50px'/></a></li>
+			<li><a href="" onClick="document.getElementById('picked').src = '../pictures/M1060005.jpg';return false;"><img src='../pictures/M1060005.jpg'  height='50px'/></a></li>
+			<li><a href="" onClick="document.getElementById('picked').src = '../pictures/M1060006.jpg';return false;"><img src='../pictures/M1060006.jpg'  height='50px'/></a></li>
+			<li><a href="" onClick="document.getElementById('picked').src = '../pictures/M1060007.jpg';return false;"><img src='../pictures/M1060007.jpg'  height='50px'/></a></li>
+		</ul>
+	</div>
+</td>
+</tr>
+</tbody></table>
+</body>
+</html>
+	

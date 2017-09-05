@@ -1,0 +1,6 @@
+/* Force a Numeric Input */
+/* onkeyup="ForceNumericInput(this,false);" */
+function ForceNumericInput(field,DotIncl) {
+	if (DotIncl == true) {var regExpr = /^[0-9]*([\.]?)[0-9]*$/;} else var regExpr = /^[0-9]*$/;
+	if (!regExpr.test(field.value)) {field.value = field.value.substr(0,field.value.length-1);}
+}

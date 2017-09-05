@@ -1,0 +1,10 @@
+/* Something I need to know */
+
+magic_quotes_gpc = on will makes the file to adding \" to a "
+Try placing a file called .htaccess in the main folder of your dadabik installation.
+ The content of this .htaccess file must be:
+(php_flag magic_quotes_gpc Off) or modify the php.ini to fix this
+
+htmlspecialchars, strip_tags, htmlentities, stripslashes
+mysql_real_escape_string($_POST['ContactName']);
+

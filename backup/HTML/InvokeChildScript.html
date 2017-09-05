@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Invoking javascript in child window from parent page</title>
+
+</head>
+<body>
+<body>
+<input type="button" name="start" value="Call child script" id="Chat" width="40" onClick="call();">
+
+<iframe src="InvokeChildScript2.html" height="380" width="645" id="ChatFrame" frameborder=1 SCROLLING=no allowTransparency="false" style="position:fixed;bottom:0px;right:0px;z-index:3;background-color:#E6FFE6;display:none;">
+  <p>Your browser does not support iframes.</p>
+</iframe>
+</body>
+<script type="text/javascript">
+function call()  
+{
+	document.getElementById('ChatFrame').contentWindow.call(); 
+}	
+</script>
+</html>

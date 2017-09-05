@@ -1,0 +1,24 @@
+<?php
+if(isset($_POST['Save']))
+{
+	include("config.php");
+	$ShortDesc =  mysql_real_escape_string($_POST['ShortDesc']);
+	$Source = mysql_real_escape_string($_POST['Source']);
+	$Name =  mysql_real_escape_string($_POST['Name']);
+	$Ext =  mysql_real_escape_string($_POST['Ext']);
+	$SaveCheck = "SELECT * FROM main WHERE Name = '$Name' AND Ext = '$Ext' LIMIT 1";
+	$result2 = mysql_query($SaveCheck);
+	if (mysql_num_rows($result2) > 0){
+			$ErrorMessage = "**Duplication record(Name: $Name, Ext: $Ext)**";
+	}
+	ELSE {
+			mysql_query("INSERT INTO main(ShortDesc,Source,Name,Ext) VALUES('$ShortDesc', '$Source', '$Name','$Ext')");
+			$GetDisplay = "SELECT id FROM main where Name = '$Name' AND Ext = '$Ext' LIMIT 1";
+			include("RecordSet.php");
+			$inTwoMonths = 60 * 60 * 24 * 60 + time();
+			setcookie( "searchID2", $searchID, $inTwoMonths, "", "", false, true );
+			mysql_close();
+			header('Location: ResultDisp.php');
+	} /* SaveCheck.RecordCount */	
+}
+?> 

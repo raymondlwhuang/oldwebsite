@@ -1,0 +1,270 @@
+<html>
+<head>
+  <title>CFQUERY Insert</title>
+  <style type="text/css">
+    TH {
+      background-color : #888888;
+    }
+    TD {
+      background-color : #C0C0C0;
+    }
+  </style>
+</head>
+
+<body>
+<table border="1" width=100%>
+  <tr>
+    <th>Session</th>
+    <th>Date</th>
+    <th>Rep</th>
+    <th>Time</th>
+  </tr>	  
+<cfquery name="GetRecord" datasource="ProgrammingCF">
+         SELECT Id, session_Id, PageNumber 
+         FROM slidepage
+		 WHERE session_id = 1  <!--- #session# --->
+		   and PageNumber = 1  <!--- PageNumber# --->
+		 order by session_id
+</cfquery> 
+<cfoutput query="GetRecord" group="session_Id" groupcasesensitive="false">
+	<cfquery name="GetRepDate" datasource="ProgrammingCF">
+	         SELECT Startdate,Rep_id 
+	         FROM session
+			 WHERE Id = #GetRecord.session_id#
+	</cfquery>
+	<cfquery name="GetRep" datasource="ProgrammingCF">
+	         SELECT FName,LName 
+	         FROM Rep
+			 WHERE RepId = '#GetRepDate.rep_id#'
+	</cfquery>
+	<cfquery name="GetTotaltime" datasource="ProgrammingCF">
+	         SELECT sum(Duration)/60 TotalTime
+	         FROM slidepage
+			 WHERE PageNumber = #GetRecord.PageNumber#
+			   and session_id = #GetRecord.session_id#
+	</cfquery>
+  <tr>
+    <td>#ID#</td>
+    <td>#dateformat(GetRepDate.Startdate,"medium")#</td>
+    <td>#GetRep.FName# #GetRep.LName#</td> 
+    <td>#Round(GetTotaltime.TotalTime)# minutes</td>
+  </tr> 	
+		
+</cfoutput>
+</table>
+<!--- Representative --->
+		<!--- Rep Data --->
+<table border="1" width=100%>
+  <tr>
+    <th>Name</th>
+    <th>Sessions</th>
+    <th>Total Time</th>
+    <th>Favorite Material</th>
+  </tr>
+	<cfquery name="GetsessionInfo" datasource="ProgrammingCF">
+	         SELECT Startdate,Rep_id,Duration,Id 
+	         FROM session
+			 WHERE ApplicationName = "this is a testing" <!--- #ApplicationName# --->
+			 ORDER BY Rep_id, Id   
+	</cfquery>
+	<cfset RepCurrent = "">
+	<cfset RepSessionCount = 0> 
+
+	<cfset RepIdArray = arrayNew(1)>
+	<cfset i = 0>
+	<cfoutput query="GetsessionInfo" group="Rep_Id" groupcasesensitive="no">
+		<cfset i = i + 1>
+		<cfset RepIdArray[i] = #Rep_Id#>
+	</cfoutput>
+
+	<cfloop index="Element" from="1" to="#ArrayLen(RepIdArray)#">
+		<cfset RepSessionCount = 0>
+		<cfquery name="GetRepSessionCount" datasource="ProgrammingCF">
+	         SELECT Id, (Duration / 3600) RepTotalTime 
+	         FROM session
+			 WHERE Rep_Id = '#RepIdArray[Element]#'
+			   and ApplicationName = "this is a testing" <!--- #ApplicationName# ---> 
+			   Order by Id
+		</cfquery>
+	
+		<cfset LongerViewed = 0>
+		<cfset FavoriteMat = "">		
+   	    <cfoutput query="GetRepSessionCount" group="Id" groupcasesensitive="no">
+<!---			<cfoutput>#GetRepSessionCount.Id#</cfoutput><br>--->
+			<cfset RepSessionCount = RepSessionCount + 1> 
+		
+			<cfquery name="GetFavNameSlid" datasource="ProgrammingCF">
+		         SELECT Name, Duration 
+		         FROM SlideSet
+				 WHERE session_Id = #GetRepSessionCount.Id#
+			</cfquery>
+			<cfquery name="GetFavNamePDF" datasource="ProgrammingCF">
+		         SELECT Name, Duration 
+		         FROM PDF
+				 WHERE session_Id = #GetRepSessionCount.Id#
+			</cfquery>
+			<cfquery name="GetFavNameVideo" datasource="ProgrammingCF">
+		         SELECT Name, Duration 
+		         FROM Video
+				 WHERE session_Id = #GetRepSessionCount.Id#
+			</cfquery>
+			<cfscript>
+/*				   WriteOutput(#GetRepSessionCount.Id# &","&#GetFavNameSlid.Duration#);*/
+				   if (#GetFavNameSlid.Duration# gt LongerViewed){
+					   LongerViewed = #GetFavNameSlid.Duration#;
+					   FavoriteMat = #GetFavNameSlid.Name#;
+					   			   	
+				   }			   
+				   if (#GetFavNamePDF.Duration# gt LongerViewed){
+						   LongerViewed = #GetFavNamePDF.Duration#;
+						   FavoriteMat = #GetFavNamePDF.Name#;			   	
+					   }
+				   if (#GetFavNameVideo.Duration# gt LongerViewed){
+						   LongerViewed = #GetFavNameVideo.Duration#;
+						   FavoriteMat = #GetFavNameVideo.Name#;			   	
+					   } 			
+			
+			</cfscript>
+			</cfoutput>
+			<cfquery name="GetRepFullName" datasource="ProgrammingCF">
+		         SELECT FName, LName, RepId 
+		         FROM Rep
+				 WHERE RepId = #RepIdArray[Element]#
+			</cfquery>			
+			<cfoutput>
+			<tr>
+				<td><a href = "TrackDoc3.cfm?Rep_Id=#RepIdArray[Element]#">#GetRepFullName.FName# #GetRepFullName.LName#<a></a></td>
+				<td>#RepSessionCount#</td>
+				<td>#Round(GetRepSessionCount.RepTotalTime)# h</td> 
+				<td>#FavoriteMat#</td>
+			</tr>
+			</cfoutput>							
+	</cfloop>	
+	
+</table>
+<!--- Rep Data Details  --->
+<table border="1" width=100%>
+	<tr>
+		<th>Session</th>
+		<th>Date</th>
+		<th>Length</th>
+		<th>Material Used</th>
+	</tr>
+	<cfquery name="GetRepDetail" datasource="ProgrammingCF">
+	     SELECT Id, startdate, Duration 
+	     FROM session
+		 WHERE Rep_Id = "111111" <!---'#Rep_Id#'--->
+		   and ApplicationName = "this is a testing" <!--- #ApplicationName# ---> 
+		   Order by Id
+	</cfquery>
+	<cfoutput query="GetRepDetail" group="Id" groupcasesensitive="no">
+	    <cfset MaterialsUsed = "">  
+		<cfquery name="GetMaterialSlid" datasource="ProgrammingCF">
+	         SELECT Name 
+	         FROM SlideSet
+			 WHERE session_Id = #GetRepDetail.Id#
+		</cfquery>
+		<cfif GetMaterialSlid.RecordCount neq 0>
+			<cfset MaterialsUsed = #GetMaterialSlid.Name#>
+		</cfif>
+		<cfquery name="GetMaterialPDF" datasource="ProgrammingCF">
+	         SELECT Name 
+	         FROM PDF
+			 WHERE session_Id = #GetRepDetail.Id#
+		</cfquery>
+		<cfif GetMaterialPDF.RecordCount neq 0>
+		    <cfif MaterialsUsed eq "">
+				<cfset MaterialsUsed = #GetMaterialPDF.Name#>
+			<cfelse>
+				<cfset MaterialsUsed = MaterialsUsed + "," + #GetMaterialPDF.Name#>
+			</cfif>
+		</cfif>
+		<cfquery name="GetMaterialVideo" datasource="ProgrammingCF">
+	         SELECT Name 
+	         FROM Video
+			 WHERE session_Id = #GetRepDetail.Id#
+		</cfquery>
+		<cfif GetMaterialVideo.RecordCount neq 0>
+		    <cfif MaterialsUsed eq "">
+				<cfset MaterialsUsed = #GetMaterialVideo.Name#>
+			<cfelse>
+				<cfset MaterialsUsed = MaterialsUsed + "," + #GetMaterialVideo.Name#>
+			</cfif>
+		</cfif>
+	<tr>
+		<td>#GetRepDetail.Id#</td>
+		<td>#Dateformat(GetRepDetail.startdate,"short")#</td>
+		<td>#GetRepDetail.Duration#</td>
+		<td>#MaterialsUsed#</td>
+	</tr>				
+	</cfoutput>  
+</table>
+<!--- End of Representative --->
+
+<!--- Session --->
+	<!--- Session Data --->
+<table border="1" width=100%>
+	<tr>
+		<th>Session</th>
+		<th>Date</th>
+		<th>Time</th>
+		<th>Rep</th>
+		<th>Materials Used</th>
+	</tr>
+	<cfquery name="GetsessionData" datasource="ProgrammingCF">
+	         SELECT Id,Startdate,(Duration/3600) sessionTime,Rep_Id 
+	         FROM session
+			 WHERE ApplicationName = "this is a testing" <!--- #ApplicationName# --->
+			 ORDER BY Id   
+	</cfquery>
+	<cfoutput query="GetsessionData" group="Id" groupcasesensitive="no">
+	    <cfset MaterialsUsed = "">
+		<cfquery name="GetRepName" datasource="ProgrammingCF">
+	         SELECT FName, LName, RepId 
+	         FROM Rep
+			 WHERE RepId = #GetsessionData.Rep_Id#
+		</cfquery>		  
+		<cfquery name="GetMaterialSlid" datasource="ProgrammingCF">
+	         SELECT Name 
+	         FROM SlideSet
+			 WHERE session_Id = #GetRepDetail.Id#
+		</cfquery>
+		<cfif GetMaterialSlid.RecordCount neq 0>
+			<cfset MaterialsUsed = #GetMaterialSlid.Name#>
+		</cfif>
+		<cfquery name="GetMaterialPDF" datasource="ProgrammingCF">
+	         SELECT Name 
+	         FROM PDF
+			 WHERE session_Id = #GetRepDetail.Id#
+		</cfquery>
+		<cfif GetMaterialPDF.RecordCount neq 0>
+		    <cfif MaterialsUsed eq "">
+				<cfset MaterialsUsed = #GetMaterialPDF.Name#>
+			<cfelse>
+				<cfset MaterialsUsed = MaterialsUsed + "," + #GetMaterialPDF.Name#>
+			</cfif>
+		</cfif>
+		<cfquery name="GetMaterialVideo" datasource="ProgrammingCF">
+	         SELECT Name 
+	         FROM Video
+			 WHERE session_Id = #GetRepDetail.Id#
+		</cfquery>
+		<cfif GetMaterialVideo.RecordCount neq 0>
+		    <cfif MaterialsUsed eq "">
+				<cfset MaterialsUsed = #GetMaterialVideo.Name#>
+			<cfelse>
+				<cfset MaterialsUsed = MaterialsUsed + "," + #GetMaterialVideo.Name#>
+			</cfif>
+		</cfif>
+	<tr>
+		<td>#GetsessionData.Id#</td>
+		<td>#DateFormat(GetsessionData.startdate,"short")#</td>
+		<td>#Round(GetsessionData.sessionTime)# h</td>
+		<td>#GetRepName.FName# #GetRepName.LName#</td>
+		<td>#MaterialsUsed#</td>
+	</tr>		
+	</cfoutput>	
+</table>		
+
+</body>
+</html>

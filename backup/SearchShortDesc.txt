@@ -1,0 +1,15 @@
+<?php
+require_once 'config.php';
+$query = "SELECT id, ShortDesc FROM main group by ShortDesc";
+$result = mysql_query($query);
+
+if (!$result) die ("Database access failed: " . mysql_error());
+
+$rows = mysql_num_rows($result);
+
+for ($j = 0 ; $j < $rows ; ++$j)
+{
+	echo substr('00'.mysql_result($result,$j,'id'). ':', -4);
+	echo mysql_result($result,$j,'ShortDesc'). ':::';
+}
+?>

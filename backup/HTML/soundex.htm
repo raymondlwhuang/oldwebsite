@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+function soundex (str) {
+    // Calculate the soundex key of a string  
+    // 
+    // version: 1107.2516
+    // discuss at: http://phpjs.org/functions/soundex    // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+    // +    tweaked by: Jack
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Onno Marsman
+    // +      input by: Brett Zamir (http://brett-zamir.me)    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   original by: Arnout Kazemier (http://www.3rd-Eden.com)
+    // +    revised by: Rafal Kukawski (http://blog.kukawski.pl)
+    // *     example 1: soundex('Kevin');
+    // *     returns 1: 'K150'    // *     example 2: soundex('Ellery');
+    // *     returns 2: 'E460'
+    // *     example 3: soundex('Euler');
+    // *     returns 3: 'E460'
+    str = (str + '').toUpperCase();    if (!str) {
+        return '';
+    }
+    var sdx = [0, 0, 0, 0],
+        m = {            B: 1,
+            F: 1,
+            P: 1,
+            V: 1,
+            C: 2,            G: 2,
+            J: 2,
+            K: 2,
+            Q: 2,
+            S: 2,            X: 2,
+            Z: 2,
+            D: 3,
+            T: 3,
+            L: 4,            M: 5,
+            N: 5,
+            R: 6
+        },
+        i = 0,        j, s = 0,
+        c, p;
+ 
+    while ((c = str.charAt(i++)) && s < 4) {
+        if (j = m[c]) {            if (j !== p) {
+                sdx[s++] = p = j;
+            }
+        } else {
+            s += i === 1;            p = 0;
+        }
+    }
+ 
+    sdx[0] = str.charAt(0);    return sdx.join('');
+}
+function compare(str1,str2) {
+  if (soundex(str1) == soundex(str2)){ alert('Both word sounds similarly');} else alert('They sounds different');
+}		
+</script>
+
+</head>
+
+<body>
+<form name="validate" id="validate"  method="post">
+<table cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td>Enter the first word: <input type="text" size="50" name="firstword" id="firstword" value="" /></td>
+</tr>
+<tr>
+<td>Enter the first word: <input type="text" size="50" name="secondword" id="secondword" value=""  /></td>
+</tr>
+	<tr>
+		<td><input type="submit" value="Test the sound" name="submit" onClick = "compare(firstword.value,secondword.value);return false;"/><br/><b><font color="red" id="ErrorMessage"></font></b></td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

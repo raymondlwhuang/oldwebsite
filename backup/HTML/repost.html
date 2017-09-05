@@ -1,0 +1,21 @@
+<script type="text/javascript" >
+
+function user_info()  
+{
+	var plugName="";
+	var numPlugins = navigator.plugins.length;
+	if (numPlugins > 0)
+	{
+		for (i = 0; i < numPlugins; i++) {
+			plugin = navigator.plugins[i];
+			plugName=plugName+"&plugName"+i+"="+plugin.name;
+
+		}
+		window.open('../PHP/repost2.php?'+plugName,target='_top');;
+		
+	}
+}
+
+</script>
+<input type="button" onclick="user_info();" value="go">
+

@@ -1,0 +1,11 @@
+Options -Indexes
+RewriteEngine on
+Options +FollowSymLinks
+RewriteCond %{HTTP_HOST} !^www\.raymondlwhuang\.com$ [NC]
+RewriteRule .* http://www.raymondlwhuang.com/	[L,R=301]
+RewriteRule ^$ PHP/index.php	[L]
+RewriteCond %{DOCUMENT_ROOT}/PHP%{REQUEST_URI} -f
+RewriteRule .* PHP/$0 [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* PHP/index.php?q=$0 [QSA]

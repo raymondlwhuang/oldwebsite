@@ -1,0 +1,10 @@
+<?php
+$result = mysql_query($GetDisplay) or die(mysql_error());
+while($row = mysql_fetch_array($result)){ 
+$searchID=$row['id'];
+$detail=$row['detail'];
+$whospend = $row['whospend']; 
+$amount =  $row['amount']; 
+$code =  $row['code']; 
+$date =  $row['date'];} 
+?>

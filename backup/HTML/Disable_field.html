@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Enable/Disable fields</title>
+	<link type="text/css" rel="stylesheet" href="../css/test.css">
+<script type="text/javascript">
+function FieldCtrl(Ctrl) {
+	if(Ctrl == 0){ 
+	alert('Field disabled');
+	document.getElementById('start_date').disabled=true; 
+	document.getElementById('amount').disabled=true;
+	} 
+	else { 
+	alert('Field enabled');
+	document.getElementById('start_date').disabled=false;
+	document.getElementById('amount').disabled=false;
+	}
+}
+</script> 	
+</head>
+<body>
+			<select name="frequency" id="frequency" class="reqd"  style="font-size:40px;border-color:#ff0000;border-width: 7px;" onchange="FieldCtrl(this.value)">
+				<option value='0'>Disable Field</option>
+				<option value='1'>Enable Field</option>
+			</select>
+		    <input type="text" name="amount" id="amount" size="8" maxlength="8" style="font-size:40px;border-color:#ff0000;border-width: 7px;border-style:ridge;"  value="0" disabled="disabled">
+			
+			<input type="text" size="10" name="start_date" id="start_date"  value="" style="font-size:40px;border-color:#ff0000;border-width: 7px;" disabled="disabled">
+
+</body>
+</html>		

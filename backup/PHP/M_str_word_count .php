@@ -1,0 +1,1 @@
+We can also specify a range of values for charlist.\r\n\r\n<?php\r\n$str = \"Hello fri3nd, you\'re\r\n       looking          good today!\r\n       look1234ing\";\r\necho str_word_count($str);\r\necho \'<br/>\';\r\necho str_word_count($str,1);\r\necho \'<br/>\';\r\necho str_word_count($str,2);\r\necho \'<br/>\';\r\nprint_r(str_word_count($str, 1, \'0..3\'));\r\n?> 

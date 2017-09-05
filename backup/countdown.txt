@@ -1,0 +1,44 @@
+/* The Coundown Javascript */
+<html>
+<head>
+<title>#title#</title>
+
+</head>
+<body>
+<font color=#ff8000 id="timerID"></font>
+</body>
+<script type="text/javascript"> 
+var CountdownID = null;
+	var start_min = 0;
+	var start_sec = 30;
+
+window.onload = countDown(start_min, start_sec, "timerID");
+
+function countDown(pminute, psecond, timerID) {
+	var minute = ((pminute < 1) ? "" : "") + pminute;
+	var second = ((psecond < 10) ? "0": "") + psecond;
+
+	document.getElementById(timerID).innerHTML = minute+":"+second;
+
+	if (pminute == 0 && (psecond-1) < 0) { //Recurse timer
+		clearTimeout(CountdownID);
+
+		var command = "countDown("+start_min+", "+start_sec+", '"+timerID+"')";
+		CountdownID = window.setTimeout(command, 1000);
+
+		alert("Time is Up! Enter your PIN now to subscribe!");
+	}
+	else { //Decrease time by one second
+		--psecond;
+		if (psecond == 0) {
+    		psecond=start_sec;
+	       	if (pminute == 0){pminute = start_min;}
+	       	else {--pminute;}
+		}
+
+		var command = "countDown("+pminute+", "+psecond+", '"+timerID+"')";
+		CountdownID = window.setTimeout(command, 1000);
+	}
+}
+</script>
+</html>

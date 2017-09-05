@@ -1,0 +1,57 @@
+/* General used SQL function in PHP */
+<?php
+$db_hostname = 'localhost';
+$db_database = 'publications';
+$db_username = 'username';
+$db_password = 'password';
+$db_server = mysql_connect($db_hostname, $db_username, $db_password);
+
+if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());
+/*********************************************/
+mysql_select_db($db_database) or die("Unable to select database: " . mysql_error());
+/*********************************************/
+$query = sprintf('SELECT USERNAME, PASSWORD, EMAIL_ADDR, IS_ACTIVE ' . 'FROM %sUSER WHERE USER_ID = %d', DB_TBL_PREFIX, $uid);
+$query = "SELECT * FROM classics";
+$result = mysql_query($query);
+if (!$result) die ("Database access failed: " . mysql_error());
+$rows = mysql_num_rows($result);
+
+for ($j = 0 ; $j < $rows ; ++$j)
+{
+	echo 'Author: '   . mysql_result($result,$j,'author')   . '<br />';
+	echo 'Title: '    . mysql_result($result,$j,'title')    . '<br />';
+	echo 'Category: ' . mysql_result($result,$j,'category') . '<br />';
+	echo 'Year: '     . mysql_result($result,$j,'year')     . '<br />';
+	echo 'ISBN: '     . mysql_result($result,$j,'isbn')     . '<br /><br />';
+}
+/*********************************************/
+for ($j = 0 ; $j < $rows ; ++$j)
+{
+	$row = mysql_fetch_row($result);
+	echo 'Author: ' .	$row[0] . '<br />';
+	echo 'Title: ' .	$row[1] . '<br />';
+	echo 'Category: ' .	$row[2] . '<br />';
+	echo 'Year: ' .		$row[3] . '<br />';
+	echo 'ISBN: ' .		$row[4] . '<br /><br />';
+}
+/*********************************************/
+mysql_close($db_server);
+/*********************************************/
+$query = 'PREPARE statement FROM "INSERT INTO classics
+	VALUES(?,?,?,?,?)"';
+mysql_query($query);
+
+$query = 'SET @author = "Emily Brontë",' .
+		 '@title = "Wuthering Heights",' .
+		 '@category = "Classic Fiction",' .
+		 '@year = "1847",' .
+		 '@isbn = "9780553212587"';
+mysql_query($query);
+
+$query = 'EXECUTE statement USING @author,@title,@category,@year,@isbn';
+mysql_query($query);
+
+$query = 'DEALLOCATE PREPARE statement';
+mysql_query($query);
+/*********************************************/
+$result = mysql_query("SHOW TABLES LIKE '$name'");

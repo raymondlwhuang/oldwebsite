@@ -1,0 +1,11 @@
+/* Valid Website */
+	function validWebsite(website) {
+		var re = /^(http:\/\/([\-\w]+\.)+\w{2,3}(\/[%\-\w]+(\.\w{2,})?)*(([\w\-\.\?\\/+@&#;`~=%!]*)(\.\w{2,})?)*\/?)/i;
+
+		if (!re.test(website)){
+			MessageTag.innerHTML = "** Invalid website! **";
+		}
+		else MessageTag.innerHTML = "";
+		thisMsg = false;
+		return re.test(website);			
+	}

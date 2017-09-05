@@ -1,0 +1,20 @@
+/* Crypt string */
+<?php  /* seems not working */
+$text = "boggles the inivisble monkey will rule the world";
+$key = "This is a very secret key";
+
+$iv_size = mcrypt_get_iv_size(MCRYPT_XTEA, MCRYPT_MODE_ECB);
+$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+echo strlen($text) . "<br>";
+
+$enc = mcrypt_encrypt(MCRYPT_XTEA, $key, $text, MCRYPT_MODE_ECB, $iv);
+echo strlen($enc) . "<br>";
+   
+$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+$key = "This is a very secret key";
+$text = "Meet me at 11 o'clock behind the monument.";
+echo strlen($text) . "<br>";
+
+$crypttext = mcrypt_decrypt(MCRYPT_XTEA, $key, $enc, MCRYPT_MODE_ECB, $iv);
+echo "$crypttext<br>";
+?>

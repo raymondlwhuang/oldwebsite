@@ -1,0 +1,22 @@
+html,body {
+    padding: 0;
+	margin:0;
+    text-align: center; /* !!! */
+	background-color:rgb(69, 188, 210);
+}
+div#backdrop {
+    width: 950px;
+    margin: 0 auto;
+    text-align: center;
+}
+#header{
+margin-top:0px;
+/*position:relative;top:-7px;*/
+background-color:white;
+}
+.pointer { cursor: pointer }
+.whitefont{color:white;font-weight:bold;}
+.greenfont{color:#6BB130;font-weight:bold;}
+.block{display:inline-block;}
+#Result{border-style: solid;border-color:#0000ff;border-width: 3px;width:100%;text-align:left;}
+.bodytop{width:100%;border-style: solid;border-color:#0000ff;border-width: 3px;background-color:#ffffff;text-align:center;}

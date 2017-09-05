@@ -1,0 +1,122 @@
+/* install into the server to have it work example link http://dev.mundomediainc.com/www.mundomedia.com/publisher-signup.php */
+<?php
+$referrer = $_SERVER['HTTP_REFERER'];
+
+// Sanity check to make sure we got the data from mundomedia.com website and from the contact-us page
+if ((strpos($referrer, "mundomedia.com") !== FALSE || strpos($referrer, "dev.mundomediainc.com") !== FALSE) && (strpos($referrer, "contact-us") !== FALSE || strpos($referrer, "advertiser-signup") !== FALSE || strpos($referrer, "check-status") !== FALSE)) {
+
+    // Record the ip and date of the submission
+    $sender_ip = $_SERVER['REMOTE_ADDR'];
+    $todaydate = date("l, F j, Y, g:i a");
+
+    if(isset($_REQUEST['checkApplication']) && $_REQUEST['checkApplication'] != "") {
+        // Change this email to whomever it should go to
+        // Separate addresses by comma (eg: email1@domain.com, email2@domain.com)
+		$to = 'raymondlwhuang@yahoo.com';
+		$cc = "raymondlwhuang@gmail.com";
+        //$cc = "";
+
+        $email = $_REQUEST['email'];
+        $subject = "Publisher Application Status Request";
+
+        $message = "Publisher Application Status Request\n===================================\n\n" .
+            "Email: $email\n" .
+            "\n\n===================================\nSent from: $sender_ip ($todaydate)\n";
+
+        $headers = "CC: $cc\nX-Sender-IP: $sender_ip\nFrom: $email\nReply-To: $email";
+
+        $sent = mail($to, $subject, $message, $headers) ;
+        if($sent) {
+            echo '<script type="text/javascript">alert("Your mail was sent successfully")</script>';
+            echo '<script type="text/javascript">window.location="index.html"</script>';
+        } else {
+            echo '<script type="text/javascript">alert("We encountered an error sending your mail")</script>';
+            echo '<script type="text/javascript">window.location="status-check.html"</script>';
+        }
+    } elseif(isset($_REQUEST['name']) && $_REQUEST['name'] != "") {
+        // Change this email to whomever it should go to
+        // Separate addresses by comma (eg: email1@domain.com, email2@domain.com)
+		$to = 'raymondlwhuang@yahoo.com';
+		$cc = "raymondlwhuang@gmail.com";
+        //$cc = "";
+
+        $subject = "Advertiser Signup";
+        $name = $_REQUEST['name'] ;
+        $link_creatives = $_REQUEST['creatives'];
+
+        $__tmp = $subject . " " . $name . " " . $link_creatives;
+
+        // This check is done to ensure no spam injected message gets sent with the email form
+        if (preg_match("/bcc:/i", $__tmp) == 0 &&          /* check for injected 'bcc' field */
+            preg_match("/Content-Type:/i", $__tmp) == 0 && /* check for injected 'content-type' field */
+            preg_match("/cc:/i", $__tmp) == 0 &&           /* check for injected 'cc' field */
+            preg_match("/to:/i", $__tmp) == 0) {           /* check for injected 'to' field */
+
+            // Format the body of the email
+            $message = "Advertiser Signup Sheet\n=========================\n\nFirst/Last Name: $name\n" .
+                ((isset($aim) && $aim != "") ? "HTTP Link Creatives: $link_creatives\n" : "") .
+                "\n\n=========================\nSent from: $sender_ip ($todaydate)\n";
+
+            // Set the header, include the ip and set the reply-to field for convenience when replying to the email
+            $headers = "CC: $cc\nX-Sender-IP: $sender_ip\nFrom: $email\nReply-To: $email";
+
+            // Send the email and check the result whether the function call was successful or not
+            $sent = mail($to, $subject, $message, $headers) ;
+            if($sent) {
+                echo '<script type="text/javascript">alert("Your mail was sent successfully")</script>';
+                echo '<script type="text/javascript">window.location="index.php"</script>';
+            } else {
+                echo '<script type="text/javascript">alert("We encountered an error sending your mail")</script>';
+                echo '<script type="text/javascript">window.location="index.php"</script>';
+            }
+        } else  {
+            echo '<script type="text/javascript">alert("We encountered an error sending your mail")</script>';
+            echo '<script type="text/javascript">window.location="index.php"</script>';
+        }
+    } else {
+        // Change this email to whomever it should go to
+        // Separate addresses by comma (eg: email1@domain.com, email2@domain.com)
+        //$to = "jason@mundomedia.com";
+        
+		$to = 'raymondlwhuang@yahoo.com';
+		$cc = "raymondlwhuang@gmail.com";
+        $subject = $_REQUEST['subject'];
+        $recipient = $_REQUEST['recipient'];
+        $firstname = $_REQUEST['sender_fname'] ;
+        $lastname = $_REQUEST['sender_lname'] ;
+        $email = $_REQUEST['sender_email'] ;
+        $phone = $_REQUEST['sender_phone'];
+        $message = $_REQUEST['message'];
+
+        // This check is done to ensure no spam injected message gets sent with the email form
+        if (preg_match("/bcc:/i", $email . " " . $firstname . " " . $lastname . " " . $message) == 0 &&          /* check for injected 'bcc' field */
+            preg_match("/Content-Type:/i", $email . " " . $firstname . " " . $lastname . " " . $message) == 0 && /* check for injected 'content-type' field */
+            preg_match("/cc:/i", $email . " " . $firstname . " " . $lastname . " " . $message) == 0 &&           /* check for injected 'cc' field */
+            preg_match("/to:/i", $email . " " . $firstname . " " . $lastname . " " . $message) == 0) {           /* check for injected 'to' field */
+
+            // Format the body of the email
+            $message = "Contact Name: $lastname, $firstname\nEmail: $email\nPhone: $phone\n\nAddressed to: $recipient\n\n" . $message . "\n\nSent from: $sender_ip ($todaydate)\n";
+
+            // Set the header, include the ip and set the reply-to field for convenience when replying to the email
+            $headers = "CC: $cc\nX-Sender-IP: $sender_ip\nFrom: $email\nReply-To: $email";
+
+            // Send the email and check the result whether the function call was successful or not
+            $sent = mail($to, $subject, $message, $headers) ;
+            if($sent) {
+                echo '<script type="text/javascript">alert("Your mail was sent successfully")</script>';
+                echo '<script type="text/javascript">window.location="index.html"</script>';
+            } else {
+                echo '<script type="text/javascript">alert("We encountered an error sending your mail")</script>';
+                echo '<script type="text/javascript">window.location="contact-us.html"</script>';
+            }
+        } else  {
+            echo '<script type="text/javascript">alert("We encountered an error sending your mail")</script>';
+            echo '<script type="text/javascript">window.location="contact-us.html"</script>';
+        }
+    }
+} else {
+    echo '<script type="text/javascript">alert("We encountered an error sending your mail")</script>';
+    echo '<script type="text/javascript">window.location="contact-us.html"</script>';
+}
+
+?>

@@ -1,0 +1,403 @@
+<?php
+session_start();
+if (get_magic_quotes_gpc())
+{
+    function _stripslashes_rcurs($variable, $top = true)
+    {
+        $clean_data = array();
+        foreach ($variable as $key => $value)
+        {
+            $key = ($top) ? $key : stripslashes($key);
+            $clean_data[$key] = (is_array($value)) ?
+                stripslashes_rcurs($value, false) : stripslashes($value);
+        }
+        return $clean_data;
+    }
+    $_GET = _stripslashes_rcurs($_GET);////
+    $_POST = _stripslashes_rcurs($_POST);
+}
+$todate = date('Y-m-d')."000000";
+$replaceStr = array("-", ":", " ");
+$todate = str_replace($replaceStr,"",$todate);
+$fmdate = substr($todate,0,6)."01000000";
+$daysdiff = date('d');
+include("config.php");
+
+if(isset($_POST['Delete_x']))
+{	
+	$searchID3 =  (int)$_POST['searchID'];
+	mysql_query("DELETE FROM spending WHERE id = $searchID3");
+	$GetDisplay = "SELECT * FROM spending where id < $searchID3 ORDER BY id DESC LIMIT 1";
+	include("txt/MySpending.txt");
+	unset($_POST['Delete']);
+	 Header("Location: {$_SERVER['REQUEST_URI']}");
+	 die;
+	
+}
+ELSEIF(isset($_POST['Previous_x']))
+{
+	$searchID3 =  (int)$_POST['searchID'];	
+	$GetDisplay = "SELECT * FROM spending WHERE id < $searchID3 ORDER BY id DESC LIMIT 1";
+	$result = mysql_query($GetDisplay);
+	if (mysql_num_rows($result) == 0){
+		$GetDisplay = "SELECT * FROM spending WHERE id = $searchID3";	
+	}
+	 include("txt/MySpending.txt");
+}
+ELSEIF(isset($_POST['Next_x']))
+{
+	$searchID3 =  (int)$_POST['searchID'];
+	$GetDisplay = "SELECT * FROM spending WHERE id > $searchID3 ORDER BY id LIMIT 1";
+	$result = mysql_query($GetDisplay);
+	if (mysql_num_rows($result) == 0){
+		$GetDisplay = "SELECT * FROM spending WHERE id = $searchID3";
+	}					
+	 include("txt/MySpending.txt");
+}
+ELSEIF(isset($_POST['First_x']))
+{
+	$GetDisplay = "SELECT * FROM spending ORDER BY id ASC LIMIT 1";
+	include("txt/MySpending.txt");
+}
+ELSEIF(isset($_POST['Last_x']))
+{
+	$GetDisplay = "SELECT * FROM spending ORDER BY id DESC LIMIT 1";
+	include("txt/MySpending.txt");
+} 
+ELSEIF(isset($_POST['Save_x']))
+{
+	$searchID3 =  (int)mysql_real_escape_string($_POST['searchID']);
+	$detail = mysql_real_escape_string($_POST['detail']);
+	$whospend =  mysql_real_escape_string($_POST['whospend']);
+	$amount =  mysql_real_escape_string($_POST['amount']);
+	$code =  mysql_real_escape_string($_POST['code']);
+	mysql_query("UPDATE spending SET detail='$detail', whospend='$whospend', 	amount='$amount', code='$code' WHERE id = $searchID3");
+	$GetDisplay = "SELECT * FROM spending	where id = $searchID3 ORDER BY id LIMIT 1";
+	include("txt/MySpending.txt");	
+	unset($_POST['Save']);
+	 Header("Location: {$_SERVER['REQUEST_URI']}");
+	 die;
+	
+}
+ELSEIF(isset($_POST['submit_x']))
+{
+	$fmdate = (float)($_POST['fmyear'].$_POST['fmmonth'].$_POST['fmday']."000000");
+	$todate = (float)($_POST['toyear'].$_POST['tomonth'].$_POST['today']."000000");
+	$start_date=gregoriantojd($_POST['fmmonth'], $_POST['fmday'], $_POST['fmyear']);   
+    $end_date=gregoriantojd($_POST['tomonth'], $_POST['today'], $_POST['toyear']);   
+	$daysdiff = $end_date - $start_date + 1;
+	$query="SELECT * FROM spending where date between $fmdate and $todate order by date desc";  // query string stored in a variable
+	$result=mysql_query($query);          // query executed 
+	echo mysql_error();              // if any error is there that will be printed to the screen 
+}
+else 
+{
+	if(isset($_GET['searchID']))
+	{	
+		$searchID3 =  (int)$_GET['searchID'];	
+		$GetDisplay = "SELECT * FROM spending WHERE id = $searchID3";
+		$result = mysql_query($GetDisplay);
+		include("txt/MySpending.txt");	
+		unset($_GET);
+		unset($_POST);
+	}
+	else{
+		$GetDisplay = "SELECT *	FROM spending WHERE 1 ORDER BY id desc LIMIT 1";
+		include("txt/MySpending.txt");
+		$query="SELECT * FROM spending where date between $fmdate and $todate order by date desc";  // query string stored in a variable
+		$result=mysql_query($query);          // query executed 
+		echo mysql_error();              // if any error is there that will be printed to the screen 
+		}
+}
+$queryResult="SELECT sum(amount) as Total,code FROM spending where  date between $fmdate and $todate group by code";  // query string stored in a variable
+$totalResult=mysql_query($queryResult);          // query executed 
+$GetDesc="SELECT * FROM spendcode where 1 order by description";  // query string stored in a variable
+$Desc=mysql_query($GetDesc);          // query executed 
+echo mysql_error();              // if any error is there that will be printed to the screen 
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="css/MyResource.css" />
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+<title>My Spending Reporter</title>
+<style type="text/css">
+textarea { width: 100%; margin: 0; padding: 1%; border: 1px solid #38c; }
+</style>
+<script type="text/javascript">
+function ForceNumericInput(field,DotIncl) {
+	if (DotIncl == true) {var regExpr = /^[0-9]*([\.]?)[0-9]*$/;} else var regExpr = /^[0-9]*$/;
+	if (!regExpr.test(field.value)) {field.value = field.value.substr(0,field.value.length-1);}
+}
+</script>
+</head>
+<body style="font-size:30px;">
+<?php
+$monthlyResult="SELECT * FROM spending where  1 order by id";  // query string stored in a variable
+$getMonthlyResult=mysql_query($monthlyResult);          // query executed 
+$monthorg = '';
+$yearorg = '';
+$month = '1';
+$monthlyTotal = 0;
+$replaceStr = array("-", ":", " ");
+$i = 0;
+echo '<select name="Monthly" id="Monthly" style="font-size:60px;border-style: solid;border-width: 3px;color:red">';
+while($nt=mysql_fetch_array($getMonthlyResult)){
+$date = strtotime($nt['date']);
+$month = date('F',$date);
+$year = date('Y',$date);
+if($monthorg != $month) {
+	if ($monthorg != '') {
+		echo "<option value='$monthorg $yearorg'"." >".' $'.$monthlyTotal.'-'.$monthorg .' '.$yearorg. "</option>";
+		$i++;
+	}
+	$monthlyTotal = $nt['amount'];
+	$monthorg = $month;
+	$yearorg = $year;
+}
+else $monthlyTotal = $monthlyTotal + $nt['amount'];
+}
+echo "<option value='$monthorg $yearorg'"." >".' $'.$monthlyTotal.'-'.$monthorg .' '.$yearorg. "</option>";
+echo "</select>";
+?>
+<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="MyForm" enctype="application/x-www-form-urlencoded" method="post">
+<table>
+	<tr>
+    <th>
+	<p style="font-size:60px">Spender</p>
+	</th>
+	<th>
+	<p style="font-size:60px">Amount</p>
+	</th>
+	<th>
+	<p style="font-size:60px">Description</p>
+	</th>
+	</tr>
+	<tr>
+    <td align="right">
+	<select name="whospend" id="whospend" style="font-size:60px;border-width: 7px;">
+	   <option value="M" <?php if((isset($whospend) && htmlspecialchars($whospend) == "M") || !isset($whospend)) echo "selected"; ?>>Me</option>
+	   <option value="I" <?php if(isset($whospend) && htmlspecialchars($whospend) == "I") echo "selected"; ?>>Elaine</option>
+	 </select>	
+	</td>
+    <td align="right"><input type="text" name="amount" id="amount" size="5" maxlength="5"  style="font-size:60px;border-width: 7px;" onkeyup="ForceNumericInput(this,false);" style="border: 1px solid #38c;"  value="<?php if (isset($amount)){ echo htmlspecialchars($amount); } else ''; ?>"></td>
+    <td align="right">
+	<select name="code" id="code" class="reqd" style="font-size:60px;border-width: 7px;">
+	<?php while($DescDisp=mysql_fetch_array($Desc)){
+		echo "<option value='$DescDisp[description]'";
+		if(isset($code) && htmlspecialchars($code) == $DescDisp['description']) echo "selected";
+		echo ">$DescDisp[description]</option>";
+	}
+	?>	
+	 </select>		
+	</td>	
+   </tr>  
+  <tr>
+    <td colspan="3" align="left"><input type="text" name="detail" size="50" maxlength="200" style="border: 1px solid #38c;font-size:60px;"  value="<?php if (isset($detail)){ echo htmlspecialchars($detail); } else ''; ?>"></td>
+  </tr>
+</table>    
+<input type="image" src="images/save.jpg" name="Save" value="Save"  width="190px" onclick="return confirm('Are you sure you want to save?')">
+<input type="image" src="images/cancel.jpg" name="Cancel" value="Cancel"  width="190px" onclick="this.form.reset();"> 
+<input type="image" src="images/delete.jpg" name="Delete" value="Delete" width="190px" onclick="return confirm('Are you sure you want to delete?')">
+<input type="image" src="images/add.png" name="Add" value="Add" width="190px"  onclick="window.open( 'AddSpending.php', '_top');return false;"><br/>
+<input type="image" src="images/first.jpg" name="First" value="First"> 
+<input type="image" src="images/previous.jpg" name="Previous" value="Previous"> 
+<input type="image" src="images/next.png" name="Next" value="Next"> 
+<input type="image" src="images/last.jpg" name="Last" value="Last"> 
+<input type="hidden" name="searchID" size="4" value="<?php if (isset($searchID)){ echo $searchID; } else ''; ?>">
+</form>
+<table width="100%"  style='border-style: solid;border-width: 3px;'>
+<?php	
+$i=0;
+$GrandTotal = 0;
+while($Total=mysql_fetch_array($totalResult)){
+$GrandTotal = $GrandTotal + @$Total[Total];
+echo fmod($i, 3) ? '' : '<tr>';
+echo "
+    <td  style='border-style: solid;border-width: 3px;'>
+	<font color = red><b>$Total[Total]</b></font>
+	</td>
+    <td  style='border-style: solid;border-width: 3px;'>
+	$Total[code]
+	</td>";
+$i++;
+echo fmod($i, 3) ? '' : '</tr>';
+}
+echo '</table>';
+echo " Total Spend in <font color = red><b>$daysdiff</b></font> days is ".'<font color = red><b>$'."$GrandTotal</b></font>";
+?>
+
+<form action="" name="MyForm" enctype="application/x-www-form-urlencoded" method="post">
+Date Range From:<br/>
+	<select name="fmmonth" id="fmmonth" style="font-size:90px;border-width: 7px;">
+		<option value="01" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "01"){ echo "selected"; } ?>>January</option>
+		<option value="02" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "02"){ echo "selected"; } ?>>February</option>
+		<option value="03" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "03"){ echo "selected"; } ?>>March</option>
+		<option value="04" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "04"){ echo "selected"; } ?>>April</option>
+		<option value="05" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "05"){ echo "selected"; } ?>>May</option>
+		<option value="06" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "06"){ echo "selected"; } ?>>June</option>
+		<option value="07" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "07"){ echo "selected"; } ?>>July</option>
+		<option value="08" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "08"){ echo "selected"; } ?>>August</option>
+		<option value="09" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "09"){ echo "selected"; } ?>>September</option>
+		<option value="10" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "10"){ echo "selected"; } ?>>October</option>
+		<option value="11" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "11"){ echo "selected"; } ?>>November</option>
+		<option value="12" <?php if(isset($_POST['fmmonth']) && htmlspecialchars($_POST['fmmonth']) == "12"){ echo "selected"; } ?>>December</option>
+	</select>
+	<select name="fmday" id="fmday" style="font-size:90px;border-width: 7px;">
+		<option value="01" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "01") echo "selected"; ?>>01</option>
+		<option value="02" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "02") echo "selected"; ?>>02</option>
+		<option value="03" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "03") echo "selected"; ?>>03</option>
+		<option value="04" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "04") echo "selected"; ?>>04</option>
+		<option value="05" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "05") echo "selected"; ?>>05</option>
+		<option value="06" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "06") echo "selected"; ?>>06</option>
+		<option value="07" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "07") echo "selected"; ?>>07</option>
+		<option value="08" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "08") echo "selected"; ?>>08</option>
+		<option value="09" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "09") echo "selected"; ?>>09</option>
+		<option value="10" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "10") echo "selected"; ?>>10</option>
+		<option value="11" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "11") echo "selected"; ?>>11</option>
+		<option value="12" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "12") echo "selected"; ?>>12</option>
+		<option value="13" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "13") echo "selected"; ?>>13</option>
+		<option value="14" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "14") echo "selected"; ?>>14</option>
+		<option value="15" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "15") echo "selected"; ?>>15</option>
+		<option value="16" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "16") echo "selected"; ?>>16</option>
+		<option value="17" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "17") echo "selected"; ?>>17</option>
+		<option value="18" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "18") echo "selected"; ?>>18</option>
+		<option value="19" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "19") echo "selected"; ?>>19</option>
+		<option value="20" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "20") echo "selected"; ?>>20</option>
+		<option value="21" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "21") echo "selected"; ?>>21</option>
+		<option value="22" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "22") echo "selected"; ?>>22</option>
+		<option value="23" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "23") echo "selected"; ?>>23</option>
+		<option value="24" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "24") echo "selected"; ?>>24</option>
+		<option value="25" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "25") echo "selected"; ?>>25</option>
+		<option value="26" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "26") echo "selected"; ?>>26</option>
+		<option value="27" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "27") echo "selected"; ?>>27</option>
+		<option value="28" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "28") echo "selected"; ?>>28</option>
+		<option value="29" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "29") echo "selected"; ?>>29</option>
+		<option value="30" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "30") echo "selected"; ?>>30</option>
+		<option value="31" <?php if(isset($_POST['fmday']) && htmlspecialchars($_POST['fmday']) == "31") echo "selected"; ?>>31</option>
+	</select>
+	<select name="fmyear" id="fmyear" style="font-size:90px;border-width: 7px;">
+	    <option value = "2011" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2011"){ echo "selected"; } ?>>2011</option>
+		<option value = "2012" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2012"){ echo "selected"; } ?>>2012</option>
+		<option value = "2013" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2013"){ echo "selected"; } ?>>2013</option>
+		<option value = "2014" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2014"){ echo "selected"; } ?>>2014</option>
+		<option value = "2015" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2015"){ echo "selected"; } ?>>2015</option>
+		<option value = "2016" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2016"){ echo "selected"; } ?>>2016</option>
+		<option value = "2017" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2017"){ echo "selected"; } ?>>2017</option>
+		<option value = "2018" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2018"){ echo "selected"; } ?>>2018</option>
+		<option value = "2019" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2019"){ echo "selected"; } ?>>2019</option>
+		<option value = "2020" <?php if(isset($_POST['fmyear']) && htmlspecialchars($_POST['fmyear']) == "2020"){ echo "selected"; } ?>>2020</option>
+	</select>
+<br/>To:<br/>
+	<select name="tomonth" id="tomonth" style="font-size:90px;border-width: 7px;">
+		<option value="01" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "01"){ echo "selected"; } ?>>January</option>
+		<option value="02" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "02"){ echo "selected"; } ?>>February</option>
+		<option value="03" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "03"){ echo "selected"; } ?>>March</option>
+		<option value="04" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "04"){ echo "selected"; } ?>>April</option>
+		<option value="05" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "05"){ echo "selected"; } ?>>May</option>
+		<option value="06" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "06"){ echo "selected"; } ?>>June</option>
+		<option value="07" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "07"){ echo "selected"; } ?>>July</option>
+		<option value="08" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "08"){ echo "selected"; } ?>>August</option>
+		<option value="09" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "09"){ echo "selected"; } ?>>September</option>
+		<option value="10" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "10"){ echo "selected"; } ?>>October</option>
+		<option value="11" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "11"){ echo "selected"; } ?>>November</option>
+		<option value="12" <?php if(isset($_POST['tomonth']) && htmlspecialchars($_POST['tomonth']) == "12"){ echo "selected"; } ?>>December</option>
+	</select>
+	<select name="today" id="today" style="font-size:90px;border-width: 7px;">
+		<option value="01" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "01"){ echo "selected"; } ?>>01</option>
+		<option value="02" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "02"){ echo "selected"; } ?>>02</option>
+		<option value="03" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "03"){ echo "selected"; } ?>>03</option>
+		<option value="04" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "04"){ echo "selected"; } ?>>04</option>
+		<option value="05" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "05"){ echo "selected"; } ?>>05</option>
+		<option value="06" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "06"){ echo "selected"; } ?>>06</option>
+		<option value="07" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "07"){ echo "selected"; } ?>>07</option>
+		<option value="08" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "08"){ echo "selected"; } ?>>08</option>
+		<option value="09" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "09"){ echo "selected"; } ?>>09</option>
+		<option value="10" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "10"){ echo "selected"; } ?>>10</option>
+		<option value="11" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "11"){ echo "selected"; } ?>>11</option>
+		<option value="12" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "12"){ echo "selected"; } ?>>12</option>
+		<option value="13" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "13"){ echo "selected"; } ?>>13</option>
+		<option value="14" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "14"){ echo "selected"; } ?>>14</option>
+		<option value="15" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "15"){ echo "selected"; } ?>>15</option>
+		<option value="16" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "16"){ echo "selected"; } ?>>16</option>
+		<option value="17" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "17"){ echo "selected"; } ?>>17</option>
+		<option value="18" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "18"){ echo "selected"; } ?>>18</option>
+		<option value="19" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "19"){ echo "selected"; } ?>>19</option>
+		<option value="20" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "20"){ echo "selected"; } ?>>20</option>
+		<option value="21" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "21"){ echo "selected"; } ?>>21</option>
+		<option value="22" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "22"){ echo "selected"; } ?>>22</option>
+		<option value="23" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "23"){ echo "selected"; } ?>>23</option>
+		<option value="24" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "24"){ echo "selected"; } ?>>24</option>
+		<option value="25" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "25"){ echo "selected"; } ?>>25</option>
+		<option value="26" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "26"){ echo "selected"; } ?>>26</option>
+		<option value="27" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "27"){ echo "selected"; } ?>>27</option>
+		<option value="28" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "28"){ echo "selected"; } ?>>28</option>
+		<option value="29" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "29"){ echo "selected"; } ?>>29</option>
+		<option value="30" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "30"){ echo "selected"; } ?>>30</option>
+		<option value="31" <?php if(isset($_POST['today']) && htmlspecialchars($_POST['today']) == "31"){ echo "selected"; } ?>>31</option>
+	</select>
+	<select name="toyear" id="toyear" style="font-size:90px;border-width: 7px;">
+	    <option value = "2011" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2011"){ echo "selected"; } ?>>2011</option>
+		<option value = "2012" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2012"){ echo "selected"; } ?>>2012</option>
+		<option value = "2013" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2013"){ echo "selected"; } ?>>2013</option>
+		<option value = "2014" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2014"){ echo "selected"; } ?>>2014</option>
+		<option value = "2015" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2015"){ echo "selected"; } ?>>2015</option>
+		<option value = "2016" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2016"){ echo "selected"; } ?>>2016</option>
+		<option value = "2017" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2017"){ echo "selected"; } ?>>2017</option>
+		<option value = "2018" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2018"){ echo "selected"; } ?>>2018</option>
+		<option value = "2019" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2019"){ echo "selected"; } ?>>2019</option>
+		<option value = "2020" <?php if(isset($_POST['toyear']) && htmlspecialchars($_POST['toyear']) == "2020"){ echo "selected"; } ?>>2020</option>
+	</select>
+	<br/>
+	<input type="image" src="images/submit.jpg" name="submit" value="submit"> 
+</form>
+<table border=1>
+	<tr>
+    <th  style='border-style: solid;border-width: 3px;'>
+	<p>Date</p>
+	</th>
+	<th  style='border-style: solid;border-width: 3px;'>
+	<p>Amt</p>
+	</th>
+	<th  style='border-style: solid;border-width: 3px;'>
+	<p>Description</p>
+	</th>
+	<th  style='border-style: solid;border-width: 3px;'>
+	<p>Who</p>
+	</th>
+	<th  style='border-style: solid;border-width: 3px;'>
+	<p>Detail</p>
+	</th>	
+	</tr>
+<?php	
+while($nt=mysql_fetch_array($result)){
+echo "
+<tr>
+    <td  style='border-style: solid;border-width: 3px;text-align:right;'>";
+	echo @substr($nt[date],-5);
+echo "	
+	</td>
+	<td align='right'  style='border-style: solid;border-width: 3px;text-align:right;'>
+	$nt[amount]
+	</td>
+	<td  style='border-style: solid;border-width: 3px;text-align:right;'>
+	<a href='MySpending.php?searchID=$nt[id]'>$nt[code]</a>
+	</td>
+	<td  style='border-style: solid;border-width: 3px;text-align:right;'>
+	";
+	if (@$nt[whospend] == 'M') echo "ME"; 
+	ELSE ECHO 'ELAINE';	
+echo "	
+	</td>
+<td style='border-style: solid;border-width: 3px;text-align:right;'>
+<font color = blue>$nt[detail]</font>
+</td>
+</tr>
+";
+}
+?>
+</table>
+
+
+</body>
+</html>

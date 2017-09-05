@@ -1,0 +1,30 @@
+@import "reset.css";
+
+/* -------------------- */
+/* -- General Styles -- */
+/* -------------------- */
+#wrap { width: 960px; margin: 0 auto; }
+#bg { margin: 0 auto; height:1000px; background: url(../images/bg.jpg) center top no-repeat; }
+body { font-family: gesta-1, arial, sans-serif; color: #252525; background: url(../images/bg2.jpg) repeat; }
+h1, h2 { color: #222; }
+h1 { font-size: 38px; margin: 0 0 30px 0; }
+h2 { font-size: 34px; margin: 0 0 30px 0; text-shadow: 0px 1px 1px #e1e1e1; font-weight:bold; }
+p { font-size: 15px; line-height: 22px; margin: 0 0 15px 0; }
+a { text-decoration: none; color: #69808b; }
+a:hover { color: #69808b; text-decoration:none;}
+#top-bar { height:12px; background: url(../images/top-bar.jpg); width:100%; }
+#headline { float: left; margin: 75px 0 0 0; padding-bottom: 25px; border-bottom: 1px #a7aeb1 solid; width: 100%; }
+#headline img { margin-left: -4px; }
+#headline h2 { font-family:gesta-1, arial, sans-serif; font-size: 36px; line-height: 55px; margin-bottom: 10px; color: #8ba3af; text-shadow: 0px 1px 1px #fff; !important; font-weight:bold; }
+#featured-section { clear: both; float: left; margin: 0 0 0 0; padding-bottom: 0px; width: 100%; border-bottom: 1px #a7aeb1 solid; }
+#featured-section-image { float: left;  width: 320px; height: 180px; }
+#featured-section-image img { margin: 1px 0 0 1px; }
+#featured-section-details { float: right; width: 600px; margin: 28px 0 0 0; }
+#featured-section-details h2 { font-size: 30px; color: #8ba3af; text-shadow: 0px 1px 1px #fff; margin-bottom: 20px; }
+#featured-section-details p { font-size: 16px; line-height: 26px; }
+#recent-work { clear: both; float: left; margin: 50px 0 0 0; padding-bottom: 50px; width: 100%; }
+#recent-work h2 { font-size: 32px; color: #8ba3af; text-shadow: 0px 1px 1px #fff; }
+.recent-project { float: left; margin-left: 50px; width: 280px; margin-bottom: -50px; }
+.recent-project img { border: 1px #ddd solid; }
+.recent-project { color: #8ba3af; font-family:gesta-1, arial, sans-serif; text-shadow: 0px 1px 1px #fff; font-size: 18px; font-weight:bold; margin: 15px 0 5px 0; }
+.recent-project p { font-size: 15px; }

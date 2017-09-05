@@ -1,0 +1,56 @@
+html,body {
+    padding: 0;
+	margin:0;
+    text-align: center; /* !!! */
+	background-image:url('/images/bg1.jpg');
+	background-repeat:repeat-x;	
+}
+h1{text-align: center;}
+div#backdrop {
+    width: 950px;
+    margin: 0 auto;
+    text-align: left;
+}
+#header{
+margin-top:0px;
+/*position:relative;top:-7px;*/
+background-color:white;
+}
+.pointer {cursor: pointer;}
+.submiting{cursor: pointer;background-color:#174250;color:white;font-weight:bold;height:58px;vertical-align:top;border-radius: 10px;}
+#PictureMain{
+display:inline-block;
+position:relative;
+top:-5px;
+float:left;
+}
+#PictureGroup{
+display:inline-block;
+vertical-align:top;
+width:200px;
+float:left;
+}
+#popups {
+	display: none;
+	padding: 5px;
+	border: 1px #CC0 solid;
+	clip: auto;
+	overflow: hidden;	
+}
+#Private{display:block;}
+.menu1{text-align:center;}
+.folder{display:inline-block;}
+.fullimg{max-width: 100%}
+#Friendlist{
+display:inline-block;
+vertical-align:top;
+float:left;
+}
+#Friends{height:450px;}
+#BlankMsg{display:none;}
+#my_name{color:white;font-weight:bold;}
+.redtext{color:red}
+.whitefont{color:white;font-weight:bold;}
+.greenfont{color:#6BB130;font-weight:bold;}
+.block{display:inline-block;}
+#main2{min-height:900px;}

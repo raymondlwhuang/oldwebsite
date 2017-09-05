@@ -1,0 +1,196 @@
+<?php
+session_start();
+include("config.php");
+if (get_magic_quotes_gpc())
+{
+    function _stripslashes_rcurs($variable, $top = true)
+    {
+        $clean_data = array();
+        foreach ($variable as $key => $value)
+        {
+            $key = ($top) ? $key : stripslashes($key);
+            $clean_data[$key] = (is_array($value)) ?
+                stripslashes_rcurs($value, false) : stripslashes($value);
+        }
+        return $clean_data;
+    }
+    $_GET = _stripslashes_rcurs($_GET);
+    $_POST = _stripslashes_rcurs($_POST);
+}
+if(isset($_POST['Save']))
+{
+	if($_POST['amount'] != 0)
+	{
+		$detail =  mysql_real_escape_string($_POST['detail']);
+		$whospend = mysql_real_escape_string($_POST['whospend']);
+		$amount =  (int)mysql_real_escape_string($_POST['amount']);
+		$code =  mysql_real_escape_string($_POST['code']);
+		mysql_query("INSERT INTO spending(detail,whospend,amount,code,date) VALUES('$detail', '$whospend', '$amount','$code',NOW())");
+		$GetDisplay = "SELECT * FROM spending order by id DESC LIMIT 1";
+		include("txt/MySpending.txt");
+		$inTwoMonths = 60 * 60 * 24 * 60 + time();
+		setcookie( "searchID2", $searchID, $inTwoMonths, "", "", false, true );
+		$_SESSION["searchID2"] = $searchID;
+		 Header("Location: {$_SERVER['REQUEST_URI']}");
+		 die;
+    } 
+}
+$todate = date('Y-m-d')."000000";
+$replaceStr = array("-", ":", " ");
+$todate = str_replace($replaceStr,"",$todate);
+$query="SELECT * FROM spending where date = $todate";  // query string stored in a variable
+$result=mysql_query($query);          // query executed 
+echo mysql_error();              // if any error is there that will be printed to the screen 
+$queryResult="SELECT sum(amount) as Total,code FROM spending where  date = $todate group by code";  // query string stored in a variable
+$totalResult=mysql_query($queryResult);  
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="css/MyResource.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Adding Detail of My Spending</title>
+<script type="text/javascript">
+function ForceNumericInput(field,DotIncl) {
+	if (DotIncl == true) {var regExpr = /^[0-9]*([\.]?)[0-9]*$/;} else var regExpr = /^[0-9]*$/;
+	if (!regExpr.test(field.value)) {field.value = field.value.substr(0,field.value.length-1);}
+}
+function ClearFields() {
+document.MyForm.whospend.selectedIndex = 0;
+document.MyForm.amount.value = "";
+document.MyForm.code.selectedIndex = 0;
+document.MyForm.amount.focus();
+document.MyForm.Cancel.disabled = true;
+}
+</script>
+</head>
+<body>
+<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="MyForm" enctype="application/x-www-form-urlencoded" method="post">
+<table>
+	<tr>
+    <th>
+	<p>Spender</p>
+	</th>
+	<th>
+	<p>Amount</p>
+	</th>
+	<th>
+	<p>Description</p>
+	</th>
+	</tr>
+	<tr>
+    <td align="right">
+	<select name="whospend" id="whospend">
+	<option value="M" <?php if(isset($whospend) && htmlspecialchars($whospend) == "M") echo "selected"; ?>>Me</option>
+	<option value="I" <?php if(isset($whospend) && htmlspecialchars($whospend) == "I") echo "selected"; ?>>Elaine</option>
+	</select>
+	</td>
+    <td align="right">
+	<input type="text" name="amount" id="amount" size="5" maxlength="5"  onkeyup="ForceNumericInput(this,false);if(this.value != 0) document.MyForm.Cancel.disabled = false;" style="border: 1px solid #38c;"  value="<?php if (isset($amount)){ echo htmlspecialchars($amount); } else ''; ?>">
+	</td>
+    <td align="right">
+	<select name="code" id="code" class="reqd" >
+	<option value="Eat Out" <?php if(isset($code) && htmlspecialchars($code) == "Eat Out") echo "selected"; ?>>Eat Out</option>
+	<option value="Family Entertainment" <?php if(isset($code) && htmlspecialchars($code) == "Family Entertainment") echo "selected"; ?>>Family Entertainment</option>
+	<option value="Shopping" <?php if(isset($code) && htmlspecialchars($code) == "Shopping") echo "selected"; ?>>Shopping</option>
+	<option value="Grocery" <?php if(isset($code) && htmlspecialchars($code) == "GE") echo "selected"; ?>>Grocery</option>
+	<option value="Spend on Car" <?php if(isset($code) && htmlspecialchars($code) == "Spend on Car") echo "selected"; ?>>Spend on Car</option>
+	<option value="Snack" <?php if(isset($code) && htmlspecialchars($code) == "Snack") echo "selected"; ?>>Snack</option>
+	<option value="Electronic item" <?php if(isset($code) && htmlspecialchars($code) == "Electronic item") echo "selected"; ?>>Electronic item</option>
+	<option value="Electricity and Water" <?php if(isset($code) && htmlspecialchars($code) == "Electricity and Water") echo "selected"; ?>>Electricity and Water</option>
+	<option value="Insurance" <?php if(isset($code) && htmlspecialchars($code) == "Insurance") echo "selected"; ?>>Insurance</option>
+	<option value="Party and Gift" <?php if(isset($code) && htmlspecialchars($code) == "Party and Gift") echo "selected"; ?>>Party and Gift</option>
+	<option value="Kids Reward" <?php if(isset($code) && htmlspecialchars($code) == "Kids Reward") echo "selected"; ?>>Kids Reward</option>
+	<option value="School" <?php if(isset($code) && htmlspecialchars($code) == "School") echo "selected"; ?>>School</option>
+	<option value="Repair" <?php if(isset($code) && htmlspecialchars($code) == "Repair") echo "selected"; ?>>Repair</option>
+	<option value="Heathy Food" <?php if(isset($code) && htmlspecialchars($code) == "Heathy Food") echo "selected"; ?>>Heathy Food</option>
+	<option value="Unexpected(others)" <?php if(isset($code) && htmlspecialchars($code) == "Unexpected(others)") echo "selected"; ?>>Unexpected(others)</option>
+	<option value="Consumer Gas" <?php if(isset($code) && htmlspecialchars($code) == "Consumer Gas") echo "selected"; ?>>Consumer Gas</option>
+	<option value="Property Tax" <?php if(isset($code) && htmlspecialchars($code) == "Property Tax") echo "selected"; ?>>Property Tax</option>
+	<option value="Home Phone" <?php if(isset($code) && htmlspecialchars($code) == "Home Phone") echo "selected"; ?>>Home Phone</option>
+	<option value="Cellular Phone" <?php if(isset($code) && htmlspecialchars($code) == "Cellular Phone") echo "selected"; ?>>Cellular Phone</option>
+	<option value="Internet" <?php if(isset($code) && htmlspecialchars($code) == "Internet") echo "selected"; ?>>Internet</option>
+	<option value="Television" <?php if(isset($code) && htmlspecialchars($code) == "Television") echo "selected"; ?>>Television</option>
+	<option value="Mortgage" <?php if(isset($code) && htmlspecialchars($code) == "MG") echo "selected"; ?>>Mortgage</option>
+	<option value="Money to Elaine" <?php if(isset($code) && htmlspecialchars($code) == "Money to Elaine") echo "selected"; ?>>Money to Elaine</option>
+	<option value="RSP CONTRIBUTION" <?php if(isset($code) && htmlspecialchars($code) == "RSP CONTRIBUTION") echo "selected"; ?>>RSP CONTRIBUTION</option>
+	</select>
+	</td>
+	</tr>
+	<tr>
+    <td colspan="3" align="left"><input type="text" name="detail" size="50" maxlength="200" style="border: 1px solid #38c;"  value="<?php if (isset($detail)){ echo htmlspecialchars($detail); } else ''; ?>">
+	</td>
+	</tr>
+	</table>
+	<input type="Submit" name="Save" value="Save">
+	<input type="button" name="Cancel" value="Cancel" disabled = true onClick="ClearFields();return false;">
+	</form>
+	<p text-align="right" >
+	<font color=red><b><?php if (isset($ErrorMessage)){ echo '**'.htmlspecialchars($ErrorMessage).'**   '; } else ''; ?></b></font>
+	</p>
+<table border="1" width="150">
+<?php	
+$GrandTotal = 0;
+while($Total=mysql_fetch_array($totalResult)){
+$GrandTotal = $GrandTotal + $Total[Total];
+echo "
+<tr>
+    <td align='right'>
+	<font color = red><b>$Total[Total]</b></font>
+	</td>
+    <td align='right'>
+	$Total[code]
+	</td>	
+	</tr>";
+}
+echo '</table>';
+echo "Total Spend today: <font color = red><b>\$$GrandTotal</b></font>";
+?>
+<table border=1>
+	<tr>
+    <th>
+	<p>Date</p>
+	</th>
+	<th>
+	<p>Amount</p>
+	</th>
+	<th>
+	<p>Description</p>
+	</th>
+	<th>
+	<p>Spender</p>
+	</th>
+	</tr>
+<?php	
+while($nt=mysql_fetch_array($result)){
+echo "
+<tr>
+    <td>
+	$nt[date]
+	</td>
+	<td align='right'>
+	$nt[amount]
+	</td>
+	<td>
+	$nt[code]
+	</td>
+	<td>
+	";
+	if ($nt[whospend] == 'M') echo "ME"; 
+	ELSE ECHO 'ELAINE';
+echo "	
+	</td>
+</tr>
+<tr>
+<td colspan='4'>
+<font color = blue>$nt[detail]</font>
+</td>
+</tr>
+";
+}
+?>
+</table>
+	
+	</body>
+	</html>
+	

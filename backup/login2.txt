@@ -1,0 +1,30 @@
+/* Another simple login */
+<?php
+$username = 'admin';
+$password = 'letmein';
+if(!isset($_SERVER['PHP_AUTH_USER']))
+{
+    header('WWW-Authenticate: Basic realm="Zona Restringida"');
+    header('HTTP/1.0 401 Unauthorized');
+    echo "Please enter your username and password.";
+    exit();
+}
+
+if(($_SERVER['PHP_AUTH_USER'] != $username)||($_SERVER['PHP_AUTH_PW'] != $password))
+{
+    setcookie('tries', @++$_COOKIE['tries']);
+    if($_COOKIE['tries'] > 4)
+    {
+        die();
+    }
+    header('WWW-Authenticate: Basic realm="Zona Restringida"');
+    header('HTTP/1.0 401 Unauthorized');
+    echo "Please enter your username and password.";
+    exit();
+}
+
+$_SESSION["username"] = $username;
+session_write_close();
+header( "Location: testing.php" );
+
+?> 

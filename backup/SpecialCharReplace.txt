@@ -1,0 +1,315 @@
+/* Replacing Specail Characters */
+Sub accents()
+'
+' Accents Macro
+'
+'
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="¿", ReplaceWith:="&iquest;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="©", ReplaceWith:="&copy;", _
+    Replace:=wdReplaceAll
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="á", ReplaceWith:="&aacute;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="é", ReplaceWith:="&eacute;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="í", ReplaceWith:="&iacute;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ó", ReplaceWith:="&oacute;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ú", ReplaceWith:="&uacute;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Á", ReplaceWith:="&Aacute;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="É", ReplaceWith:="&Eacute;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Í", ReplaceWith:="&Iacute;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ó", ReplaceWith:="&Oacute;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ú", ReplaceWith:="&Uacute;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ñ", ReplaceWith:="&ntilde;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ñ", ReplaceWith:="&Ntilde;", _
+    Replace:=wdReplaceAll
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="º", ReplaceWith:="&ordm;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="¿", ReplaceWith:="&iquest;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="“", ReplaceWith:="&ldquo;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="”", ReplaceWith:="&rdquo;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="–", ReplaceWith:="&ndash;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="—", ReplaceWith:="&mdash;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="¡", ReplaceWith:="&iexcl;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="«", ReplaceWith:="&laquo;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="»", ReplaceWith:="&raquo;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="¢", ReplaceWith:="&cent;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="µ", ReplaceWith:="&micro;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="±", ReplaceWith:="&plusmn;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="€", ReplaceWith:="&euro;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="£", ReplaceWith:="&pound;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="®", ReplaceWith:="&reg;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="§", ReplaceWith:="&sect;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="™", ReplaceWith:="&trade;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="¥", ReplaceWith:="&yen;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="à", ReplaceWith:="&agrave;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="À", ReplaceWith:="&Agrave;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="â", ReplaceWith:="&acirc;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Â", ReplaceWith:="&Acirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="å", ReplaceWith:="&aring;", _
+    Replace:=wdReplaceAll
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Å", ReplaceWith:="&Aring;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ã", ReplaceWith:="&atilde;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ã", ReplaceWith:="&Atilde;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ä", ReplaceWith:="&auml;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ä", ReplaceWith:="&Auml;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="æ", ReplaceWith:="&aelig;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Æ", ReplaceWith:="&AElig;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ç", ReplaceWith:="&ccedil;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ç", ReplaceWith:="&Ccedil;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="è", ReplaceWith:="&egrave;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="È", ReplaceWith:="&Egrave;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ê", ReplaceWith:="&ecirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ê", ReplaceWith:="&Ecirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ë", ReplaceWith:="&euml;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ë", ReplaceWith:="&Euml;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ì", ReplaceWith:="&igrave;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ì", ReplaceWith:="&Igrave;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="î", ReplaceWith:="&icirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Î", ReplaceWith:="&Icirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ï", ReplaceWith:="&iuml;", _
+    Replace:=wdReplaceAll
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ï", ReplaceWith:="&Iuml;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ò", ReplaceWith:="&ograve;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ò", ReplaceWith:="&Ograve;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ô", ReplaceWith:="&ocirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ô", ReplaceWith:="&Ocirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ø", ReplaceWith:="&oslash;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ø", ReplaceWith:="&Oslash;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="õ", ReplaceWith:="&otilde;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Õ", ReplaceWith:="&Otilde;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ö", ReplaceWith:="&ouml;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ö", ReplaceWith:="&Ouml;", _
+    Replace:=wdReplaceAll
+
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ù", ReplaceWith:="&ugrave;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ù", ReplaceWith:="&Ugrave;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="û", ReplaceWith:="&ucirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Û", ReplaceWith:="&Ucirc;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ü", ReplaceWith:="&uuml;", _
+    Replace:=wdReplaceAll
+
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="Ü", ReplaceWith:="&Uuml;", _
+    Replace:=wdReplaceAll
+Set myRange = ActiveDocument.Content
+myRange.Find.Execute FindText:="ÿ", ReplaceWith:="&yuml", _
+    Replace:=wdReplaceAll
+    
+myRange.Find.Execute FindText:=" ", ReplaceWith:=" ", _
+    Replace:=wdReplaceAll
+
+
+End Sub

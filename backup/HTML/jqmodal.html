@@ -1,0 +1,215 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" media="screen" href="css/jqModal.css"/>
+<title>Thickbox to jqModal example</title>
+<style type="text/css">
+div.jqmAlertContent{
+  color:#FFFFFF;
+  text-align:center;
+}
+div.jqmAlert input[type="submit"] { 
+	padding: 4px; 
+	margin: 10px 30px; 
+	background: #000; 
+	color: #FFF; 
+	border: 1px solid #AAA; 
+}
+div.jqmAlert { /* contains + positions the alert window */
+	display: none;
+	border-style:solid outset;
+	border-width:5px;
+	background: #000000; 
+	color: #grey; 
+	position: fixed;
+	top: 50%;
+	width: 250px;
+	height: 50px;
+	text-align: left;
+	left: 50%;
+	margin-left: -125px;
+}
+div.jqmAlert .jqmClose em{display:none;}
+div.jqmAlert .jqmClose {
+	width:20px;
+	height:20px;
+	display:block;
+	float:right;
+	clear:right;
+	background:transparent url(images/close_icon_double.png) 0 0 no-repeat;
+}
+div.jqmAlert a.jqmClose:hover,div.jqmAlert a.jqmCloseHover{ background-position: 0 -20px; }
+
+* html div.jqmAlert {
+     position: absolute;
+     top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(17 * (document.documentElement.offsetHeight || document.body.clientHeight) / 100) + 'px');
+}
+
+div.jqmConfirm input[type="submit"] { padding: 4px; margin: 10px 30px; background: #000; color: #FFF; border: 1px solid #AAA; }
+
+div.jqmConfirm { /* contains + positions the alert window */
+  display: none;
+  
+  position: fixed;
+  top: 17%;
+  width: 100%;
+}
+   
+* html div.jqmConfirm {
+     position: absolute;
+     top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(17 * (document.documentElement.offsetHeight || document.body.clientHeight) / 100) + 'px');
+}
+
+div.jqmConfirmWindow {
+  height:auto;
+  width: auto;
+  margin: auto;
+  
+  max-width:400px;
+  padding: 0 10px 10px;
+  
+  background:#FFF;
+  border:1px dotted #FFF;
+}
+
+.jqmConfirmTitle{
+  margin:5px 2px;
+  height:20px;
+  color:#000;
+  background:#FFF;
+}
+.jqmConfirmTitle h1{
+  margin:5px 2px;
+  padding-left:5px;
+  padding:0;
+  font-size:14px;
+  text-transform:capitalize;
+  letter-spacing:-1px;
+  font-weight:bold;
+  color:#000;
+
+  float:left;
+  height:20px;
+}
+
+div.jqmConfirm .jqmClose em{display:none;}
+div.jqmConfirm .jqmClose {
+  width:20px;
+  height:20px;
+  display:block;
+  float:right;
+  clear:right;
+  background:transparent url(images/close_icon_double.png) 0 0 no-repeat;
+}
+
+div.jqmConfirm a.jqmClose:hover{ background-position: 0 -20px; }
+
+div.jqmConfirmContent{
+  border-top:px;
+  color:#000;
+  font:11px/14pt arial;
+  padding:5px 20px 5px;
+  margin:5px;
+  border:1px dotted #111;
+  letter-spacing:0px;
+  background:#FFF url(images/darkgrid.png);
+}
+
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.clearfix {display: inline-block;}
+
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+</style>
+<script type="text/javascript" src="scripts/jquery.js"></script>
+<script src="scripts/jqModal.js" type="text/javascript">  </script>
+<script type="text/javascript">
+function alert(msg) {
+  $('#alert')
+    .jqmShow()
+    .find('div.jqmAlertContent')
+      .html(msg);
+}
+
+$().ready(function() {
+  $('#alert').jqm({overlay: 0, modal: true, trigger: false});
+  
+  // trigger an alert whenever links of class alert are pressed.
+  $('a.alert').click(function() { 
+    alert('You Have triggered an alert!'); 
+    return false;
+  });
+});
+function confirm(msg,callback) {
+  $('#confirm')
+    .jqmShow()
+    .find('p.jqmConfirmMsg')
+      .html(msg)
+    .end()
+    .find(':submit:visible')
+      .click(function(){
+        if(this.value == 'yes')
+          (typeof callback == 'string') ?
+            window.location.href = callback :
+            callback();
+        $('#confirm').jqmHide();
+      });
+}
+
+
+$().ready(function() {
+  $('#confirm').jqm({overlay: 88, modal: true, trigger: false});
+  
+  // trigger a confirm whenever links of class alert are pressed.
+  $('a.confirm').click(function() { 
+    confirm('About to visit: '+this.href+' !',this.href); 
+    return false;
+  });
+});
+			
+</script>
+</head>
+<body>
+
+<input type="button" value ="Alert a message" onclick="alert('this is a testing');">
+<a href="" class="confirm">Confirmation</a>
+<!-- Alert Dialog -->
+<div class="jqmAlert" id="alert">
+<a href="#" class="jqmClose" align="right"><em style="left:230px; position:relative; "></em></a>
+	<div id="ex3b" class="jqmAlertWindow">
+		<div class="jqmAlertTitle clearfix">
+			<div class="jqmAlertContent"></div>
+			<h1></h1>
+		</div>
+	</div>
+</div>
+<div class="jqmConfirm" id="confirm">
+
+<div id="ex3b" class="jqmConfirmWindow">
+    <div class="jqmConfirmTitle clearfix">
+    <h1>Confirmation</h1><a href="#" class="jqmClose"><em>Close</em></a>
+  </div>
+  
+  <div class="jqmConfirmContent">
+  <p class="jqmConfirmMsg"></p>
+  <p>Continue?</p>
+  </div>
+  
+  <input type="submit" value="no" />
+  <input type="submit" value="yes" />
+  </p>
+  
+</div>
+
+</div>
+</body> 
+</html>

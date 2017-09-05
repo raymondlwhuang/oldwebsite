@@ -1,0 +1,23 @@
+div {
+	margin-bottom: 10px;
+}
+
+ul {
+	display: none;
+	list-style-type: none;
+	margin-top: 5px;
+}
+
+ul > li > a:hover {background: #736F6E;}
+
+div > p {
+	display: block;
+	width: 130px;
+	font-size: 18px;
+	font-weight: bold;
+	background: #FFFFFF;
+	border: 2px outset;
+	margin:0
+ }
+ 
+div > p:hover  {  border: 2px inset;background: #FFFFFF; border-color: #736F6E;color:white  }

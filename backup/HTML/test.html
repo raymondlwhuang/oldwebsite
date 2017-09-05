@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//Dtd XHTML 1.0 transitional//EN" "http://www.w3.org/tr/xhtml1/Dtd/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>My Form</title>
+</head>
+<body>
+<script language="JavaScript" type="text/javascript">
+<!--
+function something() {
+	if(document.getElementById('firstName').value=="") {
+		alert('Please enter your first name');
+		document.getElementById('firstName').focus();
+		return false;
+	}
+	firstName=document.getElementById('firstName').value;
+	window.open('index.php?firstName='+firstName,target='_top');
+}	
+window.onload = initForms;
+function initForms() {
+		document.getElementById('testimg').onclick = function() {alert('hello');}
+}
+//-->
+</script>
+<form name="myForm" action="submit.php" method="post">
+First Name: <input type="text" id="testimg" value="" />
+<a href="" onclick="something(); return false;">submit</a>
+</form>
+</body>
+</html>

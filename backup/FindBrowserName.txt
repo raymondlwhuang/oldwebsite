@@ -1,0 +1,9 @@
+/* Find The Browser Name */
+
+<?php $brwsr = strtolower($_SERVER['HTTP_USER_AGENT']); ?>
+<? if(!ereg('safari', $brwsr) && !ereg('firefox', $brwsr)) { ?>
+<?php if(preg_match('/msie/i',$brwsr)) : ?>
+<BUTTON onClick="ClipBoard();">Copy to Clipboard</BUTTON>
+<?php else: ?>
+<BUTTON onClick="copyIntoClipboard(document.getElementById('copytext').innerHTML);">Copy to Clipboard</BUTTON>
+<?php endif; ?>

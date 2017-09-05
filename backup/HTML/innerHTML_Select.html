@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Thank you for participating!</title>
+<script type="text/javascript">
+function select_innerHTML(objeto,innerHTML){
+    objeto.innerHTML = ""
+    var selTemp = document.createElement("micoxselect")
+    var opt;
+    selTemp.id="micoxselect1"
+    document.body.appendChild(selTemp)
+    selTemp = document.getElementById("micoxselect1")
+    selTemp.style.display="none"
+    if(innerHTML.toLowerCase().indexOf("<option")<0){//se não é option eu converto
+        innerHTML = "<option>" + innerHTML + "</option>"
+    }
+    innerHTML = innerHTML.toLowerCase().replace(/<option/g,"<span").replace(/<\/option/g,"</span")
+    selTemp.innerHTML = innerHTML
+      
+    
+    for(var i=0;i<selTemp.childNodes.length;i++){
+  var spantemp = selTemp.childNodes[i];
+  
+        if(spantemp.tagName){     
+            opt = document.createElement("OPTION")
+    
+   if(document.all){ //IE
+    objeto.add(opt)
+   }else{
+    objeto.appendChild(opt)
+   }       
+    
+   //getting attributes
+   for(var j=0; j<spantemp.attributes.length ; j++){
+    var attrName = spantemp.attributes[j].nodeName;
+    var attrVal = spantemp.attributes[j].nodeValue;
+    if(attrVal){
+     try{
+      opt.setAttribute(attrName,attrVal);
+      opt.setAttributeNode(spantemp.attributes[j].cloneNode(true));
+     }catch(e){}
+    }
+   }
+   //getting styles
+   if(spantemp.style){
+    for(var y in spantemp.style){
+     try{opt.style[y] = spantemp.style[y];}catch(e){}
+    }
+   }
+   //value and text
+   opt.value = spantemp.getAttribute("value")
+   opt.text = spantemp.innerHTML
+   //IE
+   opt.selected = spantemp.getAttribute('selected');
+   opt.className = spantemp.className;
+  } 
+ }    
+ document.body.removeChild(selTemp)
+ selTemp = null
+}
+var inner = "<option value='1'>Now</option> <option value='2'>work</option>"; 
+</script>       
+</head>
+<body>
+<select name='test' id='test'>
+<option value='test1'>test1</option>
+<option value='test2'>test2</option>
+</select>
+<input type="button" value="Change" onClick="select_innerHTML(document.getElementById('test'),inner);">
+
+</body>
+</html>		

@@ -1,0 +1,19 @@
+<?php
+function getIpAddr(){
+
+    // Check the IP from share internet.
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])){
+        $ip=$_SERVER['HTTP_CLIENT_IP'];
+    }
+    // Check if the IP is passed from a proxy.
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+        $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else{
+        $ip=$_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
+}
+$ip = getIpAddr();
+echo "YOUR IP ADDRESS IS: ".$ip;
+?>

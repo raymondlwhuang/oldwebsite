@@ -1,0 +1,15 @@
+<html>
+ <head>
+ <script type="text/javascript">
+function ForceNumericInput(field,DotIncl) {
+	if (DotIncl == true) {var regExpr = /^[0-9]*([\.]?)[0-9]*$/;} else var regExpr = /^[0-9]*$/;
+	if (!regExpr.test(field.value)) {field.value = field.value.substr(0,field.value.length-1);}
+}
+ </script>
+ </head>
+ <body>
+The fill in box only allow numbers<br/>
+Accept only Integer: <input type="text"  maxlength = 10 onkeyup="ForceNumericInput(this,false);"><br/>
+Accept decimal: <input type="text"  maxlength = 10 onkeyup="ForceNumericInput(this,true);">
+</body> 
+</html>		

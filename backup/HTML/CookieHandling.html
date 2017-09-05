@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>Cookie Handling</title>
+<script type="text/javascript"> 
+function makeCookie(name,value,days) {
+  var expires = "";
+  if (days){
+    var date = new Date();
+    date.setTime(date.getTime()+(days*24*60*60*1000));
+    expires = "; expires="+date.toGMTString();
+  }
+  document.cookie = name+"="+value+expires+"; path=/";
+  alert("Cookie had been set");
+}
+
+function readCookie(name) {
+	var thisCookie = document.cookie.split(";");
+	for (var i=0; i<thisCookie.length; i++) {
+		if(thisCookie[i].split("=")[0].indexOf(name) > -1)
+		{
+			return thisCookie[i].split("=")[1];
+			break;
+		}
+	}	
+
+  return null;
+}
+
+function killCookie(name){
+  makeCookie(name,'',-1);
+}
+</script>
+</head>
+<body>
+<input type="text" name="myCookie" id="myCookie">
+<input type="button" value="set cookie" onclick="makeCookie('myCookie',document.getElementById('myCookie').value,3);"> 
+<input type="button" value="read cookie" onclick="alert(readCookie('myCookie'));"> 
+</body>
+
+</html>

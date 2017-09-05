@@ -1,0 +1,90 @@
+/*	Default stylesheet for the Carpe Slider
+	By Tom Hermansson Snickars                 
+	2005-12-10 version 1.3
+	Copyright CARPE Design                     
+	carpe.ambiprospect.com
+*/
+*.horizontal_track {
+	background-color: #bbb;
+	width: 120px;
+	line-height: 0px;
+	font-size: 0px;
+	text-align: left;
+	padding: 4px;
+	border: 1px solid;
+	border-color: #ddd #999 #999 #ddd;
+}
+*.horizontal_slider {
+	background-color: #666;
+	width: 16px;
+	height: 8px;
+	position: relative;
+	z-index: 2;
+	line-height: 0px;
+	margin: 0;
+	border: 2px solid;
+	border-color: #999 #333 #333 #999;
+}
+*.horizontal_slit {
+	background-color: #333;
+	width: 110px;
+	height: 2px;
+	margin: 4px 4px 2px 4px;
+	line-height: 0px;
+	position: absolute;
+	z-index: 1;
+	border: 1px solid;
+	border-color: #999 #ddd #ddd #999;
+}
+*.vertical_track {
+	background-color: #bbb;
+	padding: 3px 6px 15px 6px;
+	width: 24px;
+	border: 1px solid;
+	border-color: #ddd #999 #999 #ddd;
+}
+*.vertical_slider {
+	background-color: #666;
+	width: 18px;
+	height: 8px;
+	font-size: 0px;
+	text-align: left;
+	line-height: 0px;
+	position: relative;
+	z-index: 1;
+	border: 2px solid;
+	border-color: #999 #333 #333 #999;
+}
+*.vertical_slit {
+	background-color: #000;
+	width: 2px;
+	height: 100px;
+	position: absolute;
+	margin: 4px 10px 4px 10px;
+	padding: 4px 0 1px 0;
+	line-height: 0px;
+	font-size: 0;
+	border: 1px solid;
+	border-color: #666 #ccc #ccc #666;
+}
+*.display_holder {
+	background-color: #bbb;
+	color: #fff;
+	width: 34px;
+	padding: 0 2px 0 0;
+	height: 20px;
+	text-align: right;
+	border: 1px solid;
+	border-color: #ddd #999 #999 #ddd;
+}
+.value_display {
+	background-color: #bbb;
+	color: #333;
+	width: 30px;
+	text-align: right;
+	font-size: 8pt;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-weight: bold;
+	border: 0;
+	cursor: default;
+}

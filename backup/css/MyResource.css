@@ -1,0 +1,43 @@
+body {
+	color: #000;
+	background-color: #FFF;
+}
+
+input.invalid {
+	background-color: #FF9;
+	border: 2px red inset;
+}
+
+p {
+	color:#04B404;
+	text-align:right;
+	font-family:"Monotype Corsiva";
+	margin:0;
+}
+p.invalid {
+	color: #F00;
+}
+#searchfield {
+	font: 1.2em arial, helvetica, sans-serif;
+}
+
+.suggestions {
+/*	background-color: #FF9; */
+	padding: 2px 6px;
+}
+
+.suggestions:hover {
+	background-color: #69F;
+}
+
+#popups {
+	display: none;
+	padding: 5px;
+	border: 1px #CC0 solid;
+	clip: auto;
+	overflow: hidden;	
+}
+
+#searchField.error {
+	background-color: #FFC;
+}
